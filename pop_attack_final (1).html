@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pop Attack! - Jungle Classroom Review</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --jungle-dark: #022c22;
+            --jungle-green: #047857;
+            --leaf-green: #10b981;
+            --earth-brown: #78350f;
+            --gold: #fbbf24;
+            --accent-red: #ef4444;
+            --panel-bg: rgba(6, 78, 59, 0.95);
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #047857 0%, #022c22 100%);
+            color: #ffffff;
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            user-select: none;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Rich Jungle Background Decorations */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                radial-gradient(circle at 50% 8%, rgba(251, 191, 36, 0.18), transparent 23%),
+                radial-gradient(circle at 15% 55%, rgba(16, 185, 129, 0.16), transparent 28%),
+                radial-gradient(circle at 88% 42%, rgba(34, 197, 94, 0.14), transparent 28%);
+        }
+
+        .jungle-bg-decor {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .jungle-canopy {
+            position: absolute;
+            top: -70px;
+            left: -5%;
+            width: 110%;
+            height: 170px;
+            background:
+                radial-gradient(circle at 8% 70%, #14532d 0 58px, transparent 60px),
+                radial-gradient(circle at 18% 50%, #166534 0 75px, transparent 77px),
+                radial-gradient(circle at 30% 70%, #15803d 0 62px, transparent 64px),
+                radial-gradient(circle at 43% 48%, #166534 0 78px, transparent 80px),
+                radial-gradient(circle at 57% 68%, #15803d 0 68px, transparent 70px),
+                radial-gradient(circle at 71% 48%, #166534 0 82px, transparent 84px),
+                radial-gradient(circle at 84% 70%, #15803d 0 64px, transparent 66px),
+                radial-gradient(circle at 96% 48%, #14532d 0 78px, transparent 80px);
+            filter: drop-shadow(0 12px 10px rgba(0,0,0,0.28));
+        }
+
+        .tree {
+            position: absolute;
+            bottom: -12px;
+            width: 95px;
+            height: 420px;
+            background: linear-gradient(90deg, #3f2416, #75421f 45%, #3b2114);
+            border-radius: 35px 35px 10px 10px;
+            box-shadow: inset 10px 0 18px rgba(0,0,0,0.25), 8px 0 20px rgba(0,0,0,0.25);
+        }
+        .tree::before, .tree::after {
+            content: '';
+            position: absolute;
+            width: 170px;
+            height: 130px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 45% 45%, #22c55e, #15803d 58%, #14532d 100%);
+            box-shadow: -40px 22px 0 -8px #166534, 48px 18px 0 -12px #16a34a, 5px -38px 0 -10px #22c55e;
+        }
+        .tree::before { top: -90px; left: -55px; }
+        .tree::after { top: -70px; right: -58px; }
+        .tree-left { left: -28px; transform: rotate(-2deg); }
+        .tree-right { right: -28px; transform: rotate(2deg) scaleX(0.9); }
+        .tree-mid-left { left: 18%; bottom: -155px; transform: scale(0.55); opacity: 0.7; }
+        .tree-mid-right { right: 18%; bottom: -155px; transform: scale(0.6); opacity: 0.65; }
+
+        .ground-foliage {
+            position: absolute;
+            bottom: -28px;
+            left: -2%;
+            width: 104%;
+            height: 150px;
+            background:
+                radial-gradient(ellipse at 5% 100%, #064e3b 0 75px, transparent 77px),
+                radial-gradient(ellipse at 18% 100%, #047857 0 95px, transparent 97px),
+                radial-gradient(ellipse at 34% 100%, #065f46 0 85px, transparent 87px),
+                radial-gradient(ellipse at 52% 100%, #047857 0 110px, transparent 112px),
+                radial-gradient(ellipse at 70% 100%, #065f46 0 92px, transparent 94px),
+                radial-gradient(ellipse at 87% 100%, #047857 0 105px, transparent 107px),
+                radial-gradient(ellipse at 100% 100%, #064e3b 0 80px, transparent 82px);
+            opacity: 0.9;
+        }
+
+        .vine {
+            position: absolute;
+            top: -5px;
+            width: 6px;
+            background: linear-gradient(to bottom, #14532d, #16a34a, transparent);
+            border-radius: 4px;
+            transform-origin: top;
+        }
+        .vine::after {
+            content: '🍃';
+            position: absolute;
+            left: -12px;
+            bottom: 12px;
+            font-size: 1.7rem;
+        }
+        .v1 { left: 5%; height: 280px; transform: rotate(5deg); }
+        .v2 { left: 27%; height: 210px; transform: rotate(-4deg); }
+        .v3 { left: 76%; height: 320px; transform: rotate(4deg); }
+        .v4 { left: 93%; height: 250px; transform: rotate(-5deg); }
+
+        .animal-icon {
+            position: absolute;
+            font-size: 3rem;
+            filter: drop-shadow(0 5px 6px rgba(0,0,0,0.35));
+            animation: floatAnimal 4s ease-in-out infinite alternate;
+        }
+        .animal-icon.small { font-size: 2rem; }
+        .animal-icon.large { font-size: 4rem; }
+        @keyframes floatAnimal {
+            0% { transform: translateY(0) rotate(-2deg); }
+            100% { transform: translateY(-10px) rotate(2deg); }
+        }
+
+        .firefly {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #fde68a;
+            box-shadow: 0 0 12px 4px rgba(253,230,138,0.7);
+            animation: firefly 3.5s ease-in-out infinite alternate;
+        }
+        @keyframes firefly {
+            from { opacity: 0.25; transform: translate(0, 0); }
+            to { opacity: 1; transform: translate(12px, -16px); }
+        }
+
+        .screen {
+            display: none;
+            width: 100%;
+            max-width: 950px;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 0.3s ease-in-out;
+            z-index: 2;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .panel {
+            background: var(--panel-bg);
+            backdrop-filter: blur(10px);
+            border: 4px solid #34d399;
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin: 0 0 10px 0;
+            color: var(--gold);
+            text-shadow: 3px 3px 0 #022c22;
+            letter-spacing: 1px;
+        }
+
+        p.subtitle {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.2rem;
+            margin: 0 0 25px 0;
+            color: #a7f3d0;
+        }
+
+        /* Buttons */
+        .btn {
+            background: linear-gradient(to bottom, #f59e0b, #d97706);
+            color: white;
+            border: 3px solid #fef3c7;
+            padding: 14px 40px;
+            font-size: 1.4rem;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 700;
+            border-radius: 16px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #b45309, 0 10px 20px rgba(0,0,0,0.4);
+            transition: all 0.1s ease;
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 #b45309, 0 12px 25px rgba(0,0,0,0.5);
+        }
+
+        .btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #b45309;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(to bottom, #059669, #047857);
+            border-color: #a7f3d0;
+            box-shadow: 0 6px 0 #064e3b;
+        }
+        .btn-secondary:hover { box-shadow: 0 8px 0 #064e3b; }
+        .btn-secondary:active { box-shadow: 0 2px 0 #064e3b; }
+
+        .btn-danger {
+            background: linear-gradient(to bottom, #ef4444, #dc2626);
+            border-color: #fca5a5;
+            box-shadow: 0 4px 0 #991b1b;
+            padding: 6px 14px;
+            font-size: 1rem;
+        }
+
+        /* Character Selection Cards */
+        .char-grid {
+            display: flex;
+            gap: 35px;
+            justify-content: center;
+            margin: 25px 0;
+        }
+
+        .char-card {
+            background: linear-gradient(135deg, rgba(5, 150, 105, 0.7), rgba(4, 47, 46, 0.9));
+            border: 4px solid #34d399;
+            border-radius: 24px;
+            padding: 25px;
+            width: 220px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+
+        .char-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            border-color: var(--gold);
+            box-shadow: 0 15px 30px rgba(251, 191, 36, 0.3);
+        }
+
+        /* SVG Avatar Graphics matching the 3D reference style */
+        .explorer-avatar-box {
+            width: 176px;
+            height: 238px;
+            background: radial-gradient(ellipse at 50% 25%, rgba(16, 185, 129, 0.20), rgba(2, 44, 34, 0.2) 70%);
+            border-radius: 20px;
+            margin: 0 auto 15px auto;
+            position: relative;
+            border: 3px solid var(--gold);
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.28), 0 5px 15px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .explorer-avatar-box svg {
+            width: 168px;
+            height: 230px;
+            display: block;
+            overflow: visible;
+        }
+        @media (max-width: 560px) {
+            .char-grid { gap: 12px; flex-wrap: wrap; }
+            .char-card { width: 190px; padding: 14px; }
+            .explorer-avatar-box { width: 158px; height: 218px; }
+            .explorer-avatar-box svg { width: 152px; height: 210px; }
+        }
+
+        .char-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 3px;
+        }
+        .char-name-input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 8px 10px;
+            margin: 2px 0 8px;
+            border-radius: 10px;
+            border: 2px solid #34d399;
+            background: #022c22;
+            color: #fbbf24;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            text-align: center;
+        }
+        .char-name-input:focus {
+            outline: none;
+            border-color: #fbbf24;
+            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.18);
+        }
+        .char-select-btn {
+            width: 100%;
+            margin-top: 8px;
+            padding: 9px 12px;
+            border-radius: 10px;
+            border: 2px solid #fef3c7;
+            background: linear-gradient(to bottom, #f59e0b, #d97706);
+            color: white;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .char-select-btn:hover { transform: translateY(-1px); }
+
+        .char-title {
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.95rem;
+            color: #a7f3d0;
+        }
+
+        /* Top HUD */
+        .hud {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 950px;
+            margin-bottom: 12px;
+            background: rgba(4, 47, 46, 0.92);
+            padding: 12px 20px;
+            border-radius: 16px;
+            border: 2px solid #059669;
+            box-sizing: border-box;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .hud-item {
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hud-val { color: var(--gold); font-size: 1.3rem; }
+        .timer-val { color: #fca5a5; }
+
+        .hud-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .sound-toggle {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid #34d399;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        /* Instruction Banner */
+        .instruction-banner {
+            background: linear-gradient(135deg, #d97706, #b45309);
+            border: 3px dashed var(--gold);
+            padding: 12px 20px;
+            border-radius: 14px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            width: 100%;
+            max-width: 950px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            color: #fef3c7;
+            text-transform: uppercase;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+            letter-spacing: 0.5px;
+        }
+
+        /* 9-Target Jungle Playground Arena */
+        .playground {
+            background:
+                radial-gradient(circle at 50% 32%, rgba(34,197,94,0.22), transparent 30%),
+                linear-gradient(to bottom, #0f766e 0%, #065f46 48%, #064e3b 100%);
+            border: 6px solid #059669;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 950px;
+            height: 460px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 12px;
+            padding: 18px;
+            box-sizing: border-box;
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.7), 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        /* Layered jungle scene inside the game arena */
+        .playground::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse at 0% 12%, #14532d 0 95px, transparent 98px),
+                radial-gradient(ellipse at 100% 10%, #166534 0 105px, transparent 108px),
+                radial-gradient(ellipse at 8% 100%, #022c22 0 125px, transparent 128px),
+                radial-gradient(ellipse at 92% 100%, #022c22 0 140px, transparent 143px),
+                linear-gradient(to bottom, transparent 65%, rgba(1, 51, 39, 0.42) 100%);
+        }
+
+        .playground::after {
+            content: '🌿     🍃        🦋             🍃       🌿';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 4px;
+            z-index: 0;
+            pointer-events: none;
+            text-align: center;
+            font-size: 1.35rem;
+            letter-spacing: 1.4rem;
+            opacity: 0.7;
+            filter: drop-shadow(0 3px 4px rgba(0,0,0,0.35));
+        }
+
+        .arena-decor {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .arena-tree {
+            position: absolute;
+            width: 38px;
+            height: 250px;
+            bottom: -22px;
+            background: linear-gradient(90deg, #3b2114, #75421f, #3f2416);
+            border-radius: 16px 16px 4px 4px;
+            box-shadow: inset 5px 0 10px rgba(0,0,0,0.28);
+        }
+        .arena-tree::before {
+            content: '';
+            position: absolute;
+            width: 120px;
+            height: 88px;
+            left: -42px;
+            top: -48px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 50% 45%, #22c55e, #15803d 62%, #14532d 100%);
+            box-shadow: 38px 18px 0 -8px #16a34a, -34px 20px 0 -10px #166534;
+        }
+        .arena-tree.left { left: 10px; }
+        .arena-tree.right { right: 10px; transform: scaleX(-1); }
+        .arena-vine {
+            position: absolute;
+            top: -5px;
+            width: 4px;
+            height: 135px;
+            background: #166534;
+            border-radius: 4px;
+        }
+        .arena-vine::after {
+            content: '🍃';
+            position: absolute;
+            bottom: -2px;
+            left: -9px;
+            font-size: 1.2rem;
+        }
+        .arena-animal {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.9;
+            filter: drop-shadow(0 4px 5px rgba(0,0,0,0.35));
+            animation: arenaFloat 3.8s ease-in-out infinite alternate;
+        }
+        @keyframes arenaFloat {
+            from { transform: translateY(0); }
+            to { transform: translateY(-7px); }
+        }
+
+        .bush-slot {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        .bush-base {
+            width: 85%;
+            height: 28px;
+            background: #047857;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 5px;
+            border: 2px solid #34d399;
+            box-shadow: inset 0 5px 10px rgba(0,0,0,0.4);
+            z-index: 2;
+        }
+
+        /* Target Pop Card */
+        .target-card {
+            position: absolute;
+            bottom: -120px;
+            width: 92%;
+            height: 105px;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            color: #1f2937;
+            border-radius: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1;
+            border: 3px solid #d97706;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.9);
+            transition: bottom 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding: 6px;
+            box-sizing: border-box;
+        }
+
+        .target-card.up { bottom: 18px; }
+
+        .target-emoji { font-size: 1.5rem; line-height: 1; margin-bottom: 2px; }
+        .target-text {
+            font-size: 1.5rem;
+            font-weight: 900;
+            text-align: center;
+            word-break: break-word;
+            color: #111827;
+        }
+
+        @media (max-width: 700px) {
+            .playground {
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: repeat(4, 1fr);
+                height: 500px;
+                gap: 8px;
+                padding: 10px;
+            }
+            .target-card { width: 96%; height: 92px; }
+            .target-text { font-size: 1.15rem; }
+        }
+
+        /* Setup Screen Selectors */
+        .setup-group {
+            margin: 15px 0;
+            text-align: left;
+            background: rgba(4, 47, 46, 0.6);
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 1px solid #059669;
+        }
+        .setup-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 5px;
+        }
+        .setup-group select, .setup-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 2px solid #34d399;
+            background: #022c22;
+            color: white;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            box-sizing: border-box;
+        }
+
+        /* Jungle Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(2, 44, 34, 0.8);
+            backdrop-filter: blur(6px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+            background: var(--panel-bg);
+            border: 4px solid var(--gold);
+            border-radius: 24px;
+            padding: 30px;
+            width: 90%;
+            max-width: 420px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            animation: fadeIn 0.2s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px) rotate(-4deg); }
+            75% { transform: translateX(6px) rotate(4deg); }
+        }
+        .shake { animation: shake 0.3s; }
+    </style>
+</head>
+<body>
+
+    <!-- Rich Jungle Background Theme Elements -->
+    <div class="jungle-bg-decor" aria-hidden="true">
+        <div class="jungle-canopy"></div>
+        <div class="tree tree-left"></div>
+        <div class="tree tree-right"></div>
+        <div class="tree tree-mid-left"></div>
+        <div class="tree tree-mid-right"></div>
+        <div class="ground-foliage"></div>
+        <div class="vine v1"></div>
+        <div class="vine v2"></div>
+        <div class="vine v3"></div>
+        <div class="vine v4"></div>
+        <div class="animal-icon large" style="top: 18%; left: 4%;">🐒</div>
+        <div class="animal-icon" style="top: 24%; right: 5%; animation-delay: 1s;">🦜</div>
+        <div class="animal-icon small" style="top: 43%; right: 13%; animation-delay: 2s;">🦋</div>
+        <div class="animal-icon small" style="top: 58%; left: 9%; animation-delay: 1.5s;">🐸</div>
+        <div class="animal-icon" style="top: 64%; right: 6%; animation-delay: 2.5s;">🐍</div>
+        <div class="animal-icon small" style="top: 72%; left: 19%; animation-delay: 0.5s;">🦋</div>
+        <div class="animal-icon small" style="top: 34%; left: 14%; animation-delay: 1.8s;">🌺</div>
+        <div class="firefly" style="top: 28%; left: 38%; animation-delay: 0.2s;"></div>
+        <div class="firefly" style="top: 48%; left: 62%; animation-delay: 1.2s;"></div>
+        <div class="firefly" style="top: 66%; left: 44%; animation-delay: 2s;"></div>
+        <div class="firefly" style="top: 38%; left: 81%; animation-delay: 2.7s;"></div>
+    </div>
+
+    <!-- 1. START SCREEN -->
+    <div id="start-screen" class="screen active">
+        <div class="panel">
+            <h1>🌴 POP ATTACK! 🐒</h1>
+            <p class="subtitle">Turn any review topic into a fast classroom challenge!</p>
+            <div style="font-size: 6rem; margin: 15px 0;">🗺️</div>
+            <button class="btn" onclick="goToCharSelect()">Start Game</button>
+        </div>
+    </div>
+
+    <!-- 2. CHARACTER SELECTION SCREEN -->
+    <div id="char-screen" class="screen">
+        <div class="panel">
+            <h1>Choose Your Explorer</h1>
+            <p class="subtitle">Select your jungle adventure guide!</p>
+            <div class="char-grid">
+                <!-- Leo: full-body chibi explorer with broad yellow safari hat, green field shirt, backpack and brown boots -->
+                <div class="char-card" onclick="selectCharacter('boy')">
+                    <div class="explorer-avatar-box">
+                        <svg viewBox="0 0 200 300" width="168" height="230" role="img" aria-label="Leo, cartoon jungle explorer">
+  <defs>
+    <linearGradient id="leoHatTop" x1="0" y1="0" x2="0.2" y2="1"><stop offset="0" stop-color="#fbbf24"/><stop offset="1" stop-color="#d97706"/></linearGradient>
+    <linearGradient id="leoHatBrim" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f59e0b"/><stop offset="1" stop-color="#b45309"/></linearGradient>
+    <linearGradient id="leoSkin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe0b2"/><stop offset="1" stop-color="#f6ad83"/></linearGradient>
+    <linearGradient id="leoShirt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#65a30d"/><stop offset="1" stop-color="#3f6212"/></linearGradient>
+    <linearGradient id="leoShorts" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d6a66d"/><stop offset="1" stop-color="#a66b36"/></linearGradient>
+    <linearGradient id="leoBoot" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b442b"/><stop offset="1" stop-color="#332116"/></linearGradient>
+    <radialGradient id="leoCheek"><stop offset="0" stop-color="#f58b83" stop-opacity="0.6"/><stop offset="1" stop-color="#f58b83" stop-opacity="0"/></radialGradient>
+  </defs>
+  <!-- soft ground shadow -->
+  <ellipse cx="100" cy="286" rx="57" ry="7" fill="#011b15" opacity="0.35"/>
+  <!-- backpack behind the body -->
+  <path d="M128 125 Q148 121 153 139 L158 213 Q157 222 146 222 L128 216 Z" fill="#365314" stroke="#263d10" stroke-width="2"/>
+  <path d="M139 143 Q151 141 151 153 L151 183 Q143 190 135 182 Z" fill="#4d7c0f"/>
+  <path d="M137 190 L153 190 L154 211 Q145 217 136 209 Z" fill="#3f6212" stroke="#263d10" stroke-width="1.5"/>
+  <path d="M129 133 Q117 141 116 158" fill="none" stroke="#6b4b2b" stroke-width="8" stroke-linecap="round"/>
+  <!-- legs -->
+  <path d="M76 216 L75 249 Q75 257 85 258 L94 258 L99 216 Z" fill="url(#leoSkin)"/>
+  <path d="M105 216 L111 249 Q112 257 121 256 L130 254 L124 214 Z" fill="url(#leoSkin)"/>
+  <!-- socks -->
+  <path d="M75 240 L94 240 L94 258 L75 258 Z" fill="#f4f0df"/>
+  <path d="M110 240 L127 239 L130 255 L112 258 Z" fill="#f4f0df"/>
+  <path d="M75 248 L94 248" stroke="#d8d0bd" stroke-width="2"/>
+  <path d="M111 248 L128 247" stroke="#d8d0bd" stroke-width="2"/>
+  <!-- boots -->
+  <path d="M75 254 Q80 261 76 269 L66 278 Q61 283 67 287 L103 287 Q109 285 106 278 L95 270 L94 256 Z" fill="url(#leoBoot)" stroke="#2c1b12" stroke-width="2"/>
+  <path d="M111 254 L129 253 L132 269 L143 279 Q147 284 141 287 L111 287 Q105 285 108 278 L113 269 Z" fill="url(#leoBoot)" stroke="#2c1b12" stroke-width="2"/>
+  <path d="M66 282 Q83 286 105 282 M109 282 Q126 286 143 282" fill="none" stroke="#1f160f" stroke-width="3"/>
+  <!-- shorts -->
+  <path d="M70 190 Q99 198 129 190 L132 220 Q117 228 101 220 Q86 229 69 220 Z" fill="url(#leoShorts)" stroke="#8a542d" stroke-width="2"/>
+  <path d="M101 198 L101 220 M72 211 Q86 216 99 212 M104 212 Q117 216 130 210" fill="none" stroke="#8a542d" stroke-width="1.5"/>
+  <rect x="69" y="190" width="61" height="10" rx="3" fill="#7c4a26"/>
+  <rect x="94" y="190" width="12" height="10" rx="2" fill="#d6b46a" stroke="#69401f" stroke-width="1.5"/>
+  <!-- arms behind shirt -->
+  <path d="M74 139 Q62 148 58 169 L54 190 Q55 199 64 198 Q70 197 72 188 L83 159 Z" fill="url(#leoSkin)" stroke="#df956f" stroke-width="1.5"/>
+  <path d="M125 139 Q139 145 142 165 L145 184 Q145 193 136 194 Q129 193 128 184 L119 159 Z" fill="url(#leoSkin)" stroke="#df956f" stroke-width="1.5"/>
+  <!-- shirt -->
+  <path d="M77 121 L92 116 L108 116 L124 123 Q134 131 132 154 L128 194 Q100 201 70 194 L68 153 Q67 132 77 121 Z" fill="url(#leoShirt)" stroke="#365314" stroke-width="2"/>
+  <path d="M91 117 L100 132 L109 117 L111 145 L100 153 L89 145 Z" fill="#d9f99d" stroke="#4d7c0f" stroke-width="1.5"/>
+  <path d="M77 130 L89 137 L85 157 L72 153 Z M123 130 L112 137 L116 157 L129 153 Z" fill="#4d7c0f" stroke="#365314" stroke-width="1.5"/>
+  <path d="M100 153 L100 190" stroke="#365314" stroke-width="2"/>
+  <circle cx="100" cy="164" r="2" fill="#d9f99d"/><circle cx="100" cy="176" r="2" fill="#d9f99d"/><circle cx="100" cy="187" r="2" fill="#d9f99d"/>
+  <path d="M75 166 L87 166 M113 166 L125 166" stroke="#84a83b" stroke-width="2"/>
+  <!-- straps -->
+  <path d="M76 126 Q70 145 73 180" fill="none" stroke="#6b4b2b" stroke-width="7"/>
+  <path d="M124 127 Q132 149 128 177" fill="none" stroke="#6b4b2b" stroke-width="7"/>
+  <path d="M73 151 L79 151 M127 151 L133 151" stroke="#b58a56" stroke-width="2"/>
+  <!-- neck -->
+  <path d="M88 105 L89 123 Q100 133 111 122 L111 105 Z" fill="url(#leoSkin)"/>
+  <!-- ears -->
+  <ellipse cx="62" cy="83" rx="10" ry="15" fill="url(#leoSkin)" stroke="#e49b77" stroke-width="1.5"/>
+  <ellipse cx="138" cy="83" rx="10" ry="15" fill="url(#leoSkin)" stroke="#e49b77" stroke-width="1.5"/>
+  <ellipse cx="63" cy="84" rx="4" ry="7" fill="#e99c7b"/><ellipse cx="137" cy="84" rx="4" ry="7" fill="#e99c7b"/>
+  <!-- head -->
+  <path d="M61 58 Q62 35 100 35 Q139 35 140 61 L138 92 Q134 119 101 123 Q69 120 63 94 Z" fill="url(#leoSkin)" stroke="#e49b77" stroke-width="1.5"/>
+  <!-- hair -->
+  <path d="M61 75 Q55 51 75 42 Q93 30 119 41 Q138 48 140 70 L132 62 Q122 61 113 53 Q95 68 72 69 L64 83 Z" fill="#4b2618"/>
+  <path d="M67 65 Q84 43 103 47 Q90 60 77 69 Z" fill="#60331f"/>
+  <path d="M91 48 Q111 42 128 57 Q115 54 103 62 Z" fill="#60331f"/>
+  <!-- eyes and eyebrows -->
+  <path d="M76 77 Q86 70 94 77 M107 77 Q117 70 126 77" fill="none" stroke="#5b2d20" stroke-width="3" stroke-linecap="round"/>
+  <ellipse cx="85" cy="84" rx="10" ry="13" fill="#fffdf6"/><ellipse cx="116" cy="84" rx="10" ry="13" fill="#fffdf6"/>
+  <ellipse cx="87" cy="85" rx="6.5" ry="9" fill="#3b2419"/><ellipse cx="114" cy="85" rx="6.5" ry="9" fill="#3b2419"/>
+  <ellipse cx="88" cy="82" rx="2.5" ry="3" fill="#ffffff"/><ellipse cx="115" cy="82" rx="2.5" ry="3" fill="#ffffff"/>
+  <ellipse cx="72" cy="96" rx="12" ry="7" fill="url(#leoCheek)"/><ellipse cx="129" cy="96" rx="12" ry="7" fill="url(#leoCheek)"/>
+  <path d="M96 96 Q100 99 104 96" fill="none" stroke="#d88967" stroke-width="2" stroke-linecap="round"/>
+  <path d="M84 105 Q100 119 117 104 Q102 110 84 105 Z" fill="#9f2f2f"/>
+  <path d="M87 105 Q101 113 114 105 Q102 116 87 105 Z" fill="#fffaf0"/>
+  <!-- safari hat crown and broad brim -->
+  <path d="M48 47 Q53 17 80 15 L119 15 Q145 20 151 48 L145 57 L53 57 Z" fill="url(#leoHatTop)" stroke="#a95708" stroke-width="2"/>
+  <path d="M43 45 Q69 35 100 39 Q133 35 157 47 L177 61 Q180 68 169 72 Q136 82 100 78 Q63 82 31 70 Q22 65 30 58 Z" fill="url(#leoHatBrim)" stroke="#a95708" stroke-width="2"/>
+  <path d="M49 48 Q100 37 151 49" fill="none" stroke="#fcd34d" stroke-width="3"/>
+  <path d="M60 45 Q99 30 139 45" fill="none" stroke="#92400e" stroke-width="7"/>
+  <path d="M60 45 Q99 34 139 45" fill="none" stroke="#78350f" stroke-width="3"/>
+  <path d="M99 17 L99 38" stroke="#fcd34d" stroke-width="1.5" opacity="0.8"/>
+</svg>
+                    </div>
+                    <input id="boy-name" class="char-name-input" value="Leo" maxlength="18" aria-label="Rename Leo" onclick="event.stopPropagation()" oninput="updateCharacterName('boy', this.value)">
+                    <div class="char-title">Jungle Ranger</div>
+                    <button class="char-select-btn" type="button" onclick="selectCharacter('boy')">Choose Explorer</button>
+                </div>
+
+                <!-- Maya: full-body chibi explorer with broad red safari hat, long brown hair, camera, tan shorts and brown boots -->
+                <div class="char-card" onclick="selectCharacter('girl')">
+                    <div class="explorer-avatar-box">
+                        <svg viewBox="0 0 200 300" width="168" height="230" role="img" aria-label="Maya, cartoon jungle explorer">
+  <defs>
+    <linearGradient id="mayaHatTop" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fb7185"/><stop offset="1" stop-color="#be123c"/></linearGradient>
+    <linearGradient id="mayaHatBrim" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f43f5e"/><stop offset="1" stop-color="#9f1239"/></linearGradient>
+    <linearGradient id="mayaSkin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe0b2"/><stop offset="1" stop-color="#f6ad83"/></linearGradient>
+    <linearGradient id="mayaShirt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fb7185"/><stop offset="1" stop-color="#be123c"/></linearGradient>
+    <linearGradient id="mayaShorts" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e4bb86"/><stop offset="1" stop-color="#b98550"/></linearGradient>
+    <linearGradient id="mayaBoot" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#795238"/><stop offset="1" stop-color="#332116"/></linearGradient>
+    <radialGradient id="mayaCheek"><stop offset="0" stop-color="#f58b83" stop-opacity="0.62"/><stop offset="1" stop-color="#f58b83" stop-opacity="0"/></radialGradient>
+    <linearGradient id="mayaCamera" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4b5563"/><stop offset="1" stop-color="#1f2937"/></linearGradient>
+  </defs>
+  <ellipse cx="100" cy="286" rx="56" ry="7" fill="#011b15" opacity="0.35"/>
+  <!-- long hair behind body -->
+  <path d="M61 73 Q55 47 76 41 Q100 29 124 42 Q145 51 140 83 L151 129 Q153 145 141 158 L130 171 L121 124 L75 125 L68 163 Q53 153 51 137 L59 103 Z" fill="#5b2d20" stroke="#3f2019" stroke-width="2"/>
+  <path d="M64 94 Q57 124 65 150 M136 94 Q145 128 136 151" fill="none" stroke="#7c422c" stroke-width="4" stroke-linecap="round"/>
+  <!-- legs -->
+  <path d="M77 218 L75 249 Q75 257 85 258 L94 258 L99 216 Z" fill="url(#mayaSkin)"/>
+  <path d="M105 216 L111 249 Q112 257 121 256 L130 254 L124 214 Z" fill="url(#mayaSkin)"/>
+  <!-- socks -->
+  <path d="M75 240 L94 240 L94 258 L75 258 Z" fill="#f4f0df"/>
+  <path d="M110 240 L127 239 L130 255 L112 258 Z" fill="#f4f0df"/>
+  <path d="M75 248 L94 248 M111 248 L128 247" stroke="#d8d0bd" stroke-width="2"/>
+  <!-- boots -->
+  <path d="M75 254 Q80 261 76 269 L66 278 Q61 283 67 287 L103 287 Q109 285 106 278 L95 270 L94 256 Z" fill="url(#mayaBoot)" stroke="#2c1b12" stroke-width="2"/>
+  <path d="M111 254 L129 253 L132 269 L143 279 Q147 284 141 287 L111 287 Q105 285 108 278 L113 269 Z" fill="url(#mayaBoot)" stroke="#2c1b12" stroke-width="2"/>
+  <path d="M66 282 Q83 286 105 282 M109 282 Q126 286 143 282" fill="none" stroke="#1f160f" stroke-width="3"/>
+  <!-- shorts -->
+  <path d="M70 190 Q99 198 129 190 L132 220 Q117 228 101 220 Q86 229 69 220 Z" fill="url(#mayaShorts)" stroke="#a87543" stroke-width="2"/>
+  <path d="M101 198 L101 220 M72 211 Q86 216 99 212 M104 212 Q117 216 130 210" fill="none" stroke="#a87543" stroke-width="1.5"/>
+  <rect x="69" y="190" width="61" height="10" rx="3" fill="#875a35"/>
+  <rect x="94" y="190" width="12" height="10" rx="2" fill="#d6b46a" stroke="#69401f" stroke-width="1.5"/>
+  <!-- arms -->
+  <path d="M74 139 Q62 149 59 169 L56 187 Q56 196 65 197 Q72 195 73 186 L83 158 Z" fill="url(#mayaSkin)" stroke="#df956f" stroke-width="1.5"/>
+  <path d="M125 139 Q139 145 142 164 L145 185 Q145 194 136 194 Q129 193 128 184 L119 159 Z" fill="url(#mayaSkin)" stroke="#df956f" stroke-width="1.5"/>
+  <!-- red shirt -->
+  <path d="M77 121 L92 116 L108 116 L124 123 Q134 131 132 154 L128 194 Q100 201 70 194 L68 153 Q67 132 77 121 Z" fill="url(#mayaShirt)" stroke="#9f1239" stroke-width="2"/>
+  <path d="M91 117 L100 132 L109 117 L111 145 L100 153 L89 145 Z" fill="#fecdd3" stroke="#be123c" stroke-width="1.5"/>
+  <path d="M77 130 L89 137 L85 157 L72 153 Z M123 130 L112 137 L116 157 L129 153 Z" fill="#e11d48" stroke="#9f1239" stroke-width="1.5"/>
+  <path d="M100 153 L100 190" stroke="#9f1239" stroke-width="2"/>
+  <circle cx="100" cy="164" r="2" fill="#fecdd3"/><circle cx="100" cy="176" r="2" fill="#fecdd3"/><circle cx="100" cy="187" r="2" fill="#fecdd3"/>
+  <!-- neck -->
+  <path d="M88 105 L89 123 Q100 133 111 122 L111 105 Z" fill="url(#mayaSkin)"/>
+  <!-- camera held in front -->
+  <path d="M78 174 Q71 169 68 176 L70 193 Q73 199 82 195 L88 188 Z" fill="url(#mayaSkin)" stroke="#df956f" stroke-width="1.2"/>
+  <path d="M122 174 Q129 169 132 176 L130 193 Q127 199 118 195 L112 188 Z" fill="url(#mayaSkin)" stroke="#df956f" stroke-width="1.2"/>
+  <rect x="72" y="163" width="56" height="37" rx="6" fill="url(#mayaCamera)" stroke="#111827" stroke-width="2"/>
+  <rect x="81" y="158" width="16" height="7" rx="2" fill="#374151" stroke="#111827" stroke-width="1.5"/>
+  <rect x="103" y="158" width="12" height="7" rx="2" fill="#374151" stroke="#111827" stroke-width="1.5"/>
+  <circle cx="100" cy="182" r="14" fill="#0f766e" stroke="#9ca3af" stroke-width="3"/>
+  <circle cx="100" cy="182" r="9" fill="#22d3ee" stroke="#164e63" stroke-width="2"/>
+  <circle cx="97" cy="179" r="3" fill="#cffafe" opacity="0.9"/>
+  <rect x="76" y="168" width="8" height="3" rx="1" fill="#9ca3af"/>
+  <!-- ears -->
+  <ellipse cx="62" cy="83" rx="10" ry="15" fill="url(#mayaSkin)" stroke="#e49b77" stroke-width="1.5"/>
+  <ellipse cx="138" cy="83" rx="10" ry="15" fill="url(#mayaSkin)" stroke="#e49b77" stroke-width="1.5"/>
+  <ellipse cx="63" cy="84" rx="4" ry="7" fill="#e99c7b"/><ellipse cx="137" cy="84" rx="4" ry="7" fill="#e99c7b"/>
+  <!-- head -->
+  <path d="M61 58 Q62 35 100 35 Q139 35 140 61 L138 92 Q134 119 101 123 Q69 120 63 94 Z" fill="url(#mayaSkin)" stroke="#e49b77" stroke-width="1.5"/>
+  <!-- hair framing face and soft bangs -->
+  <path d="M60 77 Q54 51 75 42 Q95 29 120 42 Q141 50 140 74 L132 66 Q126 57 119 52 Q111 67 97 68 Q104 57 104 48 Q91 66 72 70 L64 85 Z" fill="#5b2d20"/>
+  <path d="M66 62 Q81 42 99 44 Q86 58 73 68 Z M105 47 Q123 43 134 59 Q120 53 111 62 Z" fill="#75402b"/>
+  <!-- eyes and eyebrows -->
+  <path d="M76 77 Q86 70 94 77 M107 77 Q117 70 126 77" fill="none" stroke="#5b2d20" stroke-width="3" stroke-linecap="round"/>
+  <ellipse cx="85" cy="84" rx="10" ry="13" fill="#fffdf6"/><ellipse cx="116" cy="84" rx="10" ry="13" fill="#fffdf6"/>
+  <ellipse cx="87" cy="85" rx="6.5" ry="9" fill="#3b2419"/><ellipse cx="114" cy="85" rx="6.5" ry="9" fill="#3b2419"/>
+  <ellipse cx="88" cy="82" rx="2.5" ry="3" fill="#ffffff"/><ellipse cx="115" cy="82" rx="2.5" ry="3" fill="#ffffff"/>
+  <ellipse cx="72" cy="96" rx="12" ry="7" fill="url(#mayaCheek)"/><ellipse cx="129" cy="96" rx="12" ry="7" fill="url(#mayaCheek)"/>
+  <path d="M96 96 Q100 99 104 96" fill="none" stroke="#d88967" stroke-width="2" stroke-linecap="round"/>
+  <path d="M84 105 Q100 119 117 104 Q102 110 84 105 Z" fill="#9f2f2f"/>
+  <path d="M87 105 Q101 113 114 105 Q102 116 87 105 Z" fill="#fffaf0"/>
+  <!-- red safari hat -->
+  <path d="M48 47 Q53 17 80 15 L119 15 Q145 20 151 48 L145 57 L53 57 Z" fill="url(#mayaHatTop)" stroke="#9f1239" stroke-width="2"/>
+  <path d="M43 45 Q69 35 100 39 Q133 35 157 47 L177 61 Q180 68 169 72 Q136 82 100 78 Q63 82 31 70 Q22 65 30 58 Z" fill="url(#mayaHatBrim)" stroke="#9f1239" stroke-width="2"/>
+  <path d="M49 48 Q100 37 151 49" fill="none" stroke="#fda4af" stroke-width="3"/>
+  <path d="M60 45 Q99 30 139 45" fill="none" stroke="#881337" stroke-width="7"/>
+  <path d="M60 45 Q99 34 139 45" fill="none" stroke="#701a35" stroke-width="3"/>
+  <path d="M99 17 L99 38" stroke="#fda4af" stroke-width="1.5" opacity="0.8"/>
+</svg>
+                    </div>
+                    <input id="girl-name" class="char-name-input" value="Maya" maxlength="18" aria-label="Rename Maya" onclick="event.stopPropagation()" oninput="updateCharacterName('girl', this.value)">
+                    <div class="char-title">Safari Expert</div>
+                    <button class="char-select-btn" type="button" onclick="selectCharacter('girl')">Choose Explorer</button>
+                </div>
+            </div>
+            <button class="btn btn-secondary" onclick="showScreen('start-screen')">Back</button>
+        </div>
+    </div>
+
+    <!-- 3. TEACHER SETUP SCREEN -->
+    <div id="setup-screen" class="screen">
+        <div class="panel" style="max-width: 650px;">
+            <h1>Mission Setup</h1>
+            <p class="subtitle">Select master topic or customize teacher content.</p>
+            
+            <div class="setup-group">
+                <label>Select Preset Topic:</label>
+                <select id="preset-select" onchange="loadPreset()">
+                    <option value="plurals">Plural Nouns Review</option>
+                    <option value="primes">Prime Numbers Math Review</option>
+                </select>
+            </div>
+
+            <div class="setup-group">
+                <label>Game Instruction:</label>
+                <input type="text" id="input-instruction" value="SMASH ALL THE PLURAL NOUNS!">
+            </div>
+
+            <div class="setup-group">
+                <label>Correct Items (comma separated):</label>
+                <input type="text" id="input-correct" value="cats, boxes, children, mice, leaves, teeth, women">
+            </div>
+
+            <div class="setup-group">
+                <label>Incorrect / Distractor Items (comma separated):</label>
+                <input type="text" id="input-incorrect" value="cat, box, child, mouse, leaf, tooth, woman">
+            </div>
+
+            <div class="setup-group">
+                <label>Game Time:</label>
+                <select id="game-duration">
+                    <option value="30">30 seconds</option>
+                    <option value="45" selected>45 seconds</option>
+                    <option value="60">60 seconds</option>
+                    <option value="90">90 seconds</option>
+                </select>
+            </div>
+
+            <div style="margin: 12px 0 4px; padding: 12px 15px; background: rgba(16,185,129,0.10); border: 1px dashed #34d399; border-radius: 12px; color: #d1fae5; font-family: 'Nunito', sans-serif; font-size: 0.95rem; line-height: 1.45;">
+                <strong style="color:#fbbf24;">Teacher tip:</strong> Put the items students should smash in Correct Items, and the distractors they should avoid in Incorrect Items. Separate each item with a comma.
+            </div>
+
+            <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
+                <button class="btn btn-secondary" onclick="showScreen('char-screen')">Back</button>
+                <button class="btn" onclick="startGameSession()">Launch Game 🚀</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. GAMEPLAY SCREEN -->
+    <div id="game-screen" class="screen">
+        <div class="hud">
+            <div class="hud-item">Explorer: <span id="hud-val-explorer" class="hud-val">Leo</span></div>
+            <div class="hud-item">Score: <span id="hud-score" class="hud-val">0</span></div>
+            <div class="hud-item">Time: <span id="hud-timer" class="hud-val timer-val">45</span>s</div>
+            <div class="hud-actions">
+                <button class="btn btn-danger" onclick="openRestartModal()">🔄 Restart</button>
+                <button class="sound-toggle" id="sound-btn" onclick="toggleSound()">🔊 Sound: ON</button>
+            </div>
+        </div>
+
+        <div class="instruction-banner" id="game-instruction-banner">
+            SMASH ALL THE PLURAL NOUNS!
+        </div>
+
+        <div class="playground" id="playground">
+            <div class="arena-decor" aria-hidden="true">
+                <div class="arena-tree left"></div>
+                <div class="arena-tree right"></div>
+                <div class="arena-vine" style="left: 17%; height: 120px;"></div>
+                <div class="arena-vine" style="left: 82%; height: 150px;"></div>
+                <div class="arena-animal" style="left: 4%; top: 24%;">🐒</div>
+                <div class="arena-animal" style="right: 4%; top: 18%; animation-delay: 1s;">🦜</div>
+                <div class="arena-animal" style="left: 46%; top: 7%; font-size: 1.4rem; animation-delay: 1.8s;">🦋</div>
+                <div class="arena-animal" style="right: 17%; bottom: 5%; font-size: 1.5rem; animation-delay: 2.4s;">🐸</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. RESULTS SCREEN -->
+    <div id="results-screen" class="screen">
+        <div class="panel">
+            <h1>🏆 Mission Complete! 🌟</h1>
+            <p class="subtitle" id="results-sub">Fantastic classroom review challenge!</p>
+            <div style="font-size: 1.8rem; margin: 15px 0; font-weight: 700;">
+                Final Score: <span id="final-score" style="color: var(--gold); font-size: 2.5rem;">0</span> points
+            </div>
+            <div style="display: flex; gap: 20px; justify-content: center; margin-top: 25px;">
+                <button class="btn" onclick="startGameSession()">Play Again 🔄</button>
+                <button class="btn btn-secondary" onclick="showScreen('setup-screen')">Change Topic ⚙️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jungle Theme Restart Modal -->
+    <div id="restart-modal" class="modal-overlay">
+        <div class="modal-box">
+            <h2 style="color: var(--gold); margin-top: 0; font-size: 2rem;">🌴 Restart Game?</h2>
+            <p style="color: #a7f3d0; font-family: 'Nunito', sans-serif; font-size: 1.1rem; margin-bottom: 25px;">
+                Are you sure you want to return to the setup screen and end the current round?
+            </p>
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <button class="btn btn-secondary" onclick="closeRestartModal()">Cancel</button>
+                <button class="btn" style="background: linear-gradient(to bottom, #ef4444, #dc2626);" onclick="executeRestart()">Yes, Restart</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const PRESETS = {
+            plurals: {
+                instruction: "SMASH ALL THE PLURAL NOUNS!",
+                correct: ["cats", "boxes", "children", "mice", "leaves", "teeth", "women", "wolves", "heroes"],
+                incorrect: ["cat", "box", "child", "mouse", "leaf", "tooth", "woman", "wolf", "hero"]
+            },
+            primes: {
+                instruction: "SMASH THE PRIME NUMBERS!",
+                correct: ["2", "3", "5", "7", "11", "13", "17", "19", "23"],
+                incorrect: ["4", "6", "8", "9", "10", "12", "14", "15", "16"]
+            }
+        };
+
+        const characterNames = { boy: "Leo", girl: "Maya" };
+        let currentExplorerName = "Leo";
+        let selectedCharacterType = "boy";
+        let soundEnabled = true;
+        let score = 0;
+        let timeLeft = 45;
+        let gameInterval = null;
+        let nextSpawnTimeout = null;
+        let currentSpawnDelay = 700;
+        const MAX_ACTIVE_POPS = 6;
+        let activeInstruction = "";
+        let correctPool = [];
+        let incorrectPool = [];
+        let audioCtx = null;
+
+        const playground = document.getElementById('playground');
+        const slots = [];
+
+        for (let i = 0; i < 12; i++) {
+            const slot = document.createElement('div');
+            slot.className = 'bush-slot';
+
+            const card = document.createElement('div');
+            card.className = 'target-card';
+            card.innerHTML = `<div class="target-emoji">🍌</div><div class="target-text">item</div>`;
+            card.addEventListener('mousedown', () => handleCardClick(card));
+
+            const base = document.createElement('div');
+            base.className = 'bush-base';
+
+            slot.appendChild(card);
+            slot.appendChild(base);
+            playground.appendChild(slot);
+            slots.push(card);
+        }
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function goToCharSelect() {
+            showScreen('char-screen');
+        }
+
+        function updateCharacterName(type, value) {
+            const cleaned = value.replace(/[^a-zA-Z0-9 ._'-]/g, '').slice(0, 18).trim();
+            characterNames[type] = cleaned || (type === 'boy' ? 'Leo' : 'Maya');
+            const input = document.getElementById(type === 'boy' ? 'boy-name' : 'girl-name');
+            if (input && input.value !== cleaned && value.length <= 18) input.value = cleaned;
+            if (selectedCharacterType === type) {
+                currentExplorerName = characterNames[type];
+                document.getElementById('hud-val-explorer').innerText = currentExplorerName;
+            }
+        }
+
+        function selectCharacter(type) {
+            selectedCharacterType = type;
+            currentExplorerName = characterNames[type] || (type === 'boy' ? 'Leo' : 'Maya');
+            showScreen('setup-screen');
+        }
+
+        function loadPreset() {
+            const key = document.getElementById('preset-select').value;
+            const p = PRESETS[key];
+            document.getElementById('input-instruction').value = p.instruction;
+            document.getElementById('input-correct').value = p.correct.join(', ');
+            document.getElementById('input-incorrect').value = p.incorrect.join(', ');
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            document.getElementById('sound-btn').innerText = soundEnabled ? "🔊 Sound: ON" : "🔇 Sound: OFF";
+        }
+
+        function initAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+
+        function playSound(type) {
+            if (!soundEnabled) return;
+            initAudio();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'correct') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+            } else if (type === 'wrong') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(90, audioCtx.currentTime + 0.3);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+            } else if (type === 'end') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(450, audioCtx.currentTime + 0.15);
+                osc.frequency.setValueAtTime(600, audioCtx.currentTime + 0.3);
+                gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.6);
+            }
+        }
+
+        function startGameSession() {
+            activeInstruction = document.getElementById('input-instruction').value.trim();
+            correctPool = document.getElementById('input-correct').value.split(',').map(s => s.trim()).filter(Boolean);
+            incorrectPool = document.getElementById('input-incorrect').value.split(',').map(s => s.trim()).filter(Boolean);
+
+            if (correctPool.length === 0 || incorrectPool.length === 0) {
+                alert("Please ensure you have entered at least one correct and one incorrect item.");
+                return;
+            }
+
+            score = 0;
+            timeLeft = parseInt(document.getElementById('game-duration').value, 10) || 45;
+            currentSpawnDelay = 700;
+            document.getElementById('hud-score').innerText = score;
+            document.getElementById('hud-timer').innerText = timeLeft;
+            document.getElementById('hud-val-explorer').innerText = currentExplorerName;
+            document.getElementById('game-instruction-banner').innerText = activeInstruction || 'SMASH THE CORRECT ANSWERS!';
+
+            showScreen('game-screen');
+
+            if (gameInterval) clearInterval(gameInterval);
+            if (nextSpawnTimeout) clearTimeout(nextSpawnTimeout);
+            slots.forEach(s => {
+                clearTimeout(s.hideTimeout);
+                s.classList.remove('up', 'shake');
+            });
+
+            gameInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('hud-timer').innerText = timeLeft;
+                if (timeLeft <= 0) endGameSession();
+            }, 1000);
+
+            // Start with several pops already visible so the game feels active.
+            for (let i = 0; i < 4; i++) spawnTarget();
+            scheduleNextSpawn();
+        }
+
+        function scheduleNextSpawn() {
+            if (timeLeft <= 0) return;
+            clearTimeout(nextSpawnTimeout);
+            nextSpawnTimeout = setTimeout(() => {
+                spawnTarget();
+                scheduleNextSpawn();
+            }, currentSpawnDelay);
+        }
+
+        function openRestartModal() {
+            if (gameInterval) clearInterval(gameInterval);
+            if (nextSpawnTimeout) clearTimeout(nextSpawnTimeout);
+            document.getElementById('restart-modal').classList.add('active');
+        }
+
+        function closeRestartModal() {
+            document.getElementById('restart-modal').classList.remove('active');
+            if (timeLeft > 0) {
+                gameInterval = setInterval(() => {
+                    timeLeft--;
+                    document.getElementById('hud-timer').innerText = timeLeft;
+                    if (timeLeft <= 0) endGameSession();
+                }, 1000);
+                scheduleNextSpawn();
+            }
+        }
+
+        function executeRestart() {
+            document.getElementById('restart-modal').classList.remove('active');
+            if (gameInterval) clearInterval(gameInterval);
+            if (nextSpawnTimeout) clearTimeout(nextSpawnTimeout);
+            slots.forEach(s => {
+                clearTimeout(s.hideTimeout);
+                s.classList.remove('up', 'shake');
+            });
+            showScreen('setup-screen');
+        }
+
+        function getActivePopCount() {
+            return slots.filter(s => s.classList.contains('up')).length;
+        }
+
+        function spawnTarget() {
+            if (timeLeft <= 0 || getActivePopCount() >= MAX_ACTIVE_POPS) return;
+
+            const hiddenSlots = slots.filter(s => !s.classList.contains('up'));
+            if (hiddenSlots.length === 0) return;
+
+            const card = hiddenSlots[Math.floor(Math.random() * hiddenSlots.length)];
+            const isCorrect = Math.random() > 0.45;
+            const sourcePool = isCorrect ? correctPool : incorrectPool;
+            const textItem = sourcePool[Math.floor(Math.random() * sourcePool.length)];
+
+            card.dataset.correct = isCorrect;
+            card.dataset.clicked = "false";
+            card.classList.remove('shake');
+
+            const correctIcons = ['🍌', '⭐', '🥥', '🍍', '💎'];
+            const wrongIcons = ['🍃', '🪵', '🪨', '🐛'];
+            const icon = isCorrect ? correctIcons[Math.floor(Math.random() * correctIcons.length)] : wrongIcons[Math.floor(Math.random() * wrongIcons.length)];
+
+            card.querySelector('.target-emoji').innerText = icon;
+            card.querySelector('.target-text').innerText = textItem;
+            card.classList.add('up');
+
+            const visibleTime = Math.random() * 900 + 1800;
+            card.hideTimeout = setTimeout(() => {
+                card.classList.remove('up');
+            }, visibleTime);
+        }
+
+        function handleCardClick(card) {
+            if (card.dataset.clicked === "true" || !card.classList.contains('up')) return;
+            card.dataset.clicked = "true";
+            clearTimeout(card.hideTimeout);
+
+            const isCorrect = card.dataset.correct === "true";
+
+            if (isCorrect) {
+                playSound('correct');
+                score++;
+                document.getElementById('hud-score').innerText = score;
+                card.querySelector('.target-emoji').innerText = '🎉';
+                currentSpawnDelay = Math.max(500, currentSpawnDelay - 20);
+                setTimeout(() => {
+                    card.classList.remove('up');
+                    scheduleNextSpawn();
+                }, 250);
+            } else {
+                playSound('wrong');
+                card.querySelector('.target-emoji').innerText = '😭';
+                card.classList.add('shake');
+                currentSpawnDelay = Math.min(950, currentSpawnDelay + 40);
+                setTimeout(() => {
+                    card.classList.remove('shake');
+                    card.classList.remove('up');
+                    scheduleNextSpawn();
+                }, 500);
+            }
+        }
+
+        function endGameSession() {
+            if (gameInterval) clearInterval(gameInterval);
+            if (nextSpawnTimeout) clearTimeout(nextSpawnTimeout);
+            slots.forEach(s => {
+                clearTimeout(s.hideTimeout);
+                s.classList.remove('up', 'shake');
+            });
+            playSound('end');
+
+            document.getElementById('final-score').innerText = score;
+            document.getElementById('results-sub').innerText = `${currentExplorerName} finished the jungle review challenge!`;
+            showScreen('results-screen');
+        }
+    </script>
+</body>
+</html>
