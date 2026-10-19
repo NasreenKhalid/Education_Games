@@ -1,0 +1,359 @@
+
+<!DOCTYPE html>
+<html lang="en" data-theme="meadow">
+<head><base href="https://d16ilfvy4mv02r.cloudfront.net/workspaces/lj6FeCmCNukAzjlNde4nhpWB9TIg7XDw/1c716454-62a6-4f68-94a1-625a7e5ec7ae/files/">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sticky Note Reflections — Student &amp; Teacher Template</title>
+<style>
+  :root{
+    --paper:#f7fbf8; --card:#ffffff; --ink:#1f3a34; --muted:#6b8a81;
+    --accent:#2e8b72; --line:#dbe7e1;
+    --n1:#d8f3e6; --n2:#fff3c4; --n3:#dcebfb; --n4:#fbe0e6; --n5:#e9e0fb; --n6:#ffe4d1;
+    --shadow:0 10px 24px rgba(31,58,52,.12);
+  }
+  html[data-theme="sunset"]{
+    --paper:#fff8f3; --card:#ffffff; --ink:#3a2330; --muted:#8a6b77;
+    --accent:#e2582c; --line:#f3e2da;
+    --n1:#ffd9c7; --n2:#ffe9a8; --n3:#ffc9d6; --n4:#f7d6e8; --n5:#ffe0b8; --n6:#f9c8c0;
+    --shadow:0 10px 24px rgba(90,40,20,.14);
+  }
+  html[data-theme="ocean"]{
+    --paper:#f3faff; --card:#ffffff; --ink:#16324f; --muted:#5e7c99;
+    --accent:#1b7fbf; --line:#dbe9f3;
+    --n1:#cde9ff; --n2:#c9f2ec; --n3:#d9e2ff; --n4:#cff0e0; --n5:#e4e0ff; --n6:#d6f0f7;
+    --shadow:0 10px 24px rgba(22,50,79,.14);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:26px 18px 60px; color:var(--ink);
+    font-family:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+    background:
+      linear-gradient(var(--line) 1px, transparent 1px) 0 0/100% 30px,
+      var(--paper);
+    transition:background .25s ease,color .25s ease;
+  }
+  .wrap{max-width:1080px;margin:0 auto}
+
+  /* ---------- header ---------- */
+  .head{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;margin-bottom:18px}
+  .title h1{margin:0;font-size:clamp(26px,4.4vw,42px);letter-spacing:-.5px}
+  .title h1 span{color:var(--accent)}
+  .title p{margin:6px 0 0;color:var(--muted);font-size:15px;max-width:44ch}
+  .meta{display:flex;gap:10px;flex-wrap:wrap}
+  .field{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:7px 12px;box-shadow:var(--shadow)}
+  .field label{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+  .field .val{min-width:120px;font-weight:600;outline:none;font-size:14px}
+  .field .val:empty:before{content:attr(data-ph);color:var(--muted);font-weight:500}
+
+  /* ---------- toolbar ---------- */
+  .toolbar{
+    display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+    background:var(--card);border:1.5px solid var(--line);border-radius:16px;
+    padding:10px 12px;box-shadow:var(--shadow);margin-bottom:22px;
+  }
+  .seg{display:flex;background:var(--paper);border:1.5px solid var(--line);border-radius:11px;padding:3px}
+  .seg button{
+    border:0;background:transparent;color:var(--muted);font:inherit;font-weight:700;
+    font-size:13px;padding:7px 15px;border-radius:8px;cursor:pointer;transition:.18s;
+  }
+  .seg button.on{background:var(--accent);color:#fff;box-shadow:0 3px 8px rgba(0,0,0,.14)}
+  .swatches{display:flex;gap:7px;margin-left:2px}
+  .sw{width:26px;height:26px;border-radius:50%;border:2.5px solid #fff;cursor:pointer;box-shadow:0 0 0 1.5px var(--line)}
+  .sw[aria-pressed="true"]{box-shadow:0 0 0 2.5px var(--accent)}
+  .spacer{flex:1 1 auto}
+  .btn{
+    border:1.5px solid var(--line);background:var(--card);color:var(--ink);
+    font:inherit;font-weight:700;font-size:13px;padding:9px 15px;border-radius:11px;cursor:pointer;transition:.18s;
+  }
+  .btn:hover{border-color:var(--accent);color:var(--accent)}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn.primary:hover{filter:brightness(1.06);color:#fff}
+
+  /* ---------- notes grid ---------- */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+  .note{
+    position:relative;background:var(--note,#fff);border-radius:14px;padding:20px 18px 22px;
+    box-shadow:var(--shadow);overflow:hidden;transition:transform .18s ease,box-shadow .18s ease;
+  }
+  .note:nth-child(1){--note:var(--n1)} .note:nth-child(2){--note:var(--n2)}
+  .note:nth-child(3){--note:var(--n3)} .note:nth-child(4){--note:var(--n4)}
+  .note:nth-child(5){--note:var(--n5)} .note:nth-child(6){--note:var(--n6)}
+  .note:hover{transform:translateY(-3px);box-shadow:0 16px 30px rgba(31,58,52,.18)}
+  .note.dragging{opacity:.55;transform:scale(.98)}
+  .note:before{ /* tape */
+    content:"";position:absolute;top:-9px;left:50%;transform:translateX(-50%) rotate(-3deg);
+    width:86px;height:20px;background:rgba(255,255,255,.72);
+    border:1px solid rgba(0,0,0,.05);box-shadow:0 2px 5px rgba(0,0,0,.08);
+  }
+  .note:after{ /* folded corner */
+    content:"";position:absolute;right:0;bottom:0;width:26px;height:26px;
+    background:linear-gradient(135deg,transparent 50%,rgba(0,0,0,.10) 50%);
+  }
+  .note header{display:flex;align-items:center;gap:9px;margin:4px 0 4px}
+  .note header h2{margin:0;font-size:16.5px;letter-spacing:-.2px}
+  .note .emoji{font-size:19px;line-height:1}
+  .handle{
+    cursor:grab;color:var(--muted);font-size:15px;line-height:1;padding:2px 4px;border-radius:6px;user-select:none;
+  }
+  .handle:active{cursor:grabbing}
+  .hint{margin:2px 0 12px;font-size:12.5px;color:var(--muted);line-height:1.35}
+  .write{
+    min-height:96px;outline:none;font-size:15px;line-height:1.55;color:var(--ink);
+    border-top:1.5px dashed rgba(0,0,0,.16);padding-top:10px;
+  }
+  .write:empty:before{content:attr(data-ph);color:var(--muted);opacity:.75}
+  .list{list-style:none;margin:0;padding:0;counter-reset:li}
+  .list li{display:flex;gap:9px;align-items:flex-start;padding:7px 0;border-bottom:1.5px dashed rgba(0,0,0,.14)}
+  .list li:last-child{border-bottom:0}
+  .list li:before{
+    counter-increment:li;content:counter(li);flex:0 0 22px;height:22px;border-radius:50%;
+    background:var(--accent);color:#fff;font-size:12px;font-weight:800;display:grid;place-items:center;margin-top:2px;
+  }
+  .list span{flex:1;outline:none;min-height:22px;font-size:14.5px;line-height:1.5}
+  .list span:empty:before{content:attr(data-ph);color:var(--muted);opacity:.7}
+  .mood{display:flex;gap:8px;flex-wrap:wrap;border-top:1.5px dashed rgba(0,0,0,.16);padding-top:12px}
+  .moodbtn{
+    font-size:26px;line-height:1;background:rgba(255,255,255,.55);border:2px solid transparent;
+    border-radius:12px;padding:6px 9px;cursor:pointer;transition:.15s;
+  }
+  .moodbtn:hover{transform:translateY(-2px) scale(1.05)}
+  .moodbtn.active{border-color:var(--accent);background:#fff;transform:scale(1.08)}
+
+  .foot{margin-top:26px;text-align:center;color:var(--muted);font-size:13px;line-height:1.6}
+  .foot b{color:var(--ink)}
+
+  @media print{
+    @page{size:letter portrait;margin:12mm}
+    body{background:#fff;padding:0}
+    .toolbar,.hint-note,.no-print{display:none !important}
+    .head{margin-bottom:10px}
+    .grid{grid-template-columns:1fr 1fr;gap:12px}
+    .note{box-shadow:none;border:1.5px dashed #b9b9b9;break-inside:avoid;transform:none !important}
+    .note:hover{transform:none}
+    .foot{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="head">
+    <div class="title">
+      <h1>Sticky Note <span>Reflections</span></h1>
+      <p>A quick, reusable check-in for students and teachers. Type straight onto each note, switch sides, and print a paper copy whenever you like.</p>
+    </div>
+    <div class="meta">
+      <div class="field"><label>Name</label><div class="val" contenteditable="true" data-key="sn.name" data-ph="________"></div></div>
+      <div class="field"><label>Date</label><div class="val" contenteditable="true" data-key="sn.date" data-ph="________"></div></div>
+    </div>
+  </div>
+
+  <div class="toolbar no-print">
+    <div class="seg" role="tablist" aria-label="Mode">
+      <button id="mStudent" class="on" role="tab" aria-selected="true">🎒 Students</button>
+      <button id="mTeacher" role="tab" aria-selected="false">🍎 Teachers</button>
+    </div>
+    <div class="swatches" aria-label="Colour theme">
+      <button class="sw" data-theme="meadow" aria-pressed="true" title="Meadow" style="background:linear-gradient(135deg,#d8f3e6,#fff3c4 45%,#dcebfb)"></button>
+      <button class="sw" data-theme="sunset" aria-pressed="false" title="Sunset" style="background:linear-gradient(135deg,#ffd9c7,#ffc9d6 50%,#ffe9a8)"></button>
+      <button class="sw" data-theme="ocean" aria-pressed="false" title="Ocean" style="background:linear-gradient(135deg,#cde9ff,#c9f2ec 50%,#e4e0ff)"></button>
+    </div>
+    <div class="spacer"></div>
+    <button class="btn" id="clearBtn">Clear this side</button>
+    <button class="btn primary" id="printBtn">🖨️ Print / Save PDF</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <p class="foot">
+    <b>How to use:</b> click any note and type · drag the <b>⠿</b> handle to rearrange · your notes save automatically in this browser ·
+    hit <b>Print</b> for a handwriting copy. Works for students reflecting on a lesson, or teachers reflecting on the day.
+  </p>
+</div>
+
+<script>
+(function(){
+  var MOODS = ["😄","🙂","😐","😕","🤯"];
+
+  var NOTES = {
+    student: [
+      {id:"s1", emoji:"⭐", title:"Today I learned…", hint:"One new thing from today’s lesson.", type:"text"},
+      {id:"s2", emoji:"❓", title:"Still wondering…", hint:"A question I want to ask next time.", type:"text"},
+      {id:"s3", emoji:"🔢", title:"My top 3 takeaways", hint:"The three things I most want to remember.", type:"list"},
+      {id:"s4", emoji:"🔑", title:"Key word", hint:"A word I want to remember — and what it means.", type:"text"},
+      {id:"s5", emoji:"😊", title:"How I feel about today", hint:"Tap the face that matches.", type:"mood"},
+      {id:"s6", emoji:"🚀", title:"My next step", hint:"One thing I’ll practise before next class.", type:"text"}
+    ],
+    teacher: [
+      {id:"t1", emoji:"✅", title:"What worked well", hint:"A strategy or moment that landed today.", type:"text"},
+      {id:"t2", emoji:"🔧", title:"What I’d change", hint:"One tweak for next time.", type:"text"},
+      {id:"t3", emoji:"🧩", title:"Students to support", hint:"Who needs a check-in — and why.", type:"list"},
+      {id:"t4", emoji:"🎉", title:"A win to celebrate", hint:"Something worth sharing with the team.", type:"text"},
+      {id:"t5", emoji:"📌", title:"Notes for tomorrow", hint:"Reminders, prep and to-dos.", type:"list"},
+      {id:"t6", emoji:"💡", title:"Resource idea", hint:"A worksheet, game or activity to try.", type:"text"}
+    ]
+  };
+
+  var grid = document.getElementById("grid");
+  var mode = localStorage.getItem("sn.mode") || "student";
+  var dragEl = null;
+
+  function cardHTML(n){
+    var body = "";
+    if(n.type === "text"){
+      body = '<div class="write" contenteditable="true" data-key="sn.val.' + n.id + '" data-ph="Type here…"></div>';
+    } else if(n.type === "list"){
+      body = '<ol class="list">';
+      for(var i=1;i<=3;i++){
+        body += '<li><span contenteditable="true" data-key="sn.val.' + n.id + '.' + i + '" data-ph="Write…"></span></li>';
+      }
+      body += '</ol>';
+    } else {
+      body = '<div class="mood" data-key="sn.mood.' + n.id + '">';
+      MOODS.forEach(function(m){
+        body += '<button class="moodbtn" data-m="' + m + '" aria-label="' + m + '">' + m + '</button>';
+      });
+      body += '</div>';
+    }
+    return '<article class="note" data-id="' + n.id + '">' +
+             '<header><span class="handle" draggable="true" title="Drag to move">⠿</span>' +
+             '<span class="emoji">' + n.emoji + '</span><h2>' + n.title + '</h2></header>' +
+             '<p class="hint">' + n.hint + '</p>' + body +
+           '</article>';
+  }
+
+  function render(){
+    var list = NOTES[mode].slice();
+    var saved = null;
+    try { saved = JSON.parse(localStorage.getItem("sn.order." + mode) || "null"); } catch(e){}
+    if(saved && saved.length){
+      list.sort(function(a,b){
+        var ia = saved.indexOf(a.id), ib = saved.indexOf(b.id);
+        if(ia < 0) ia = 999; if(ib < 0) ib = 999;
+        return ia - ib;
+      });
+    }
+    grid.innerHTML = list.map(cardHTML).join("");
+    attach();
+  }
+
+  function attach(){
+    grid.querySelectorAll("[contenteditable]").forEach(function(el){
+      var k = el.dataset.key;
+      var v = localStorage.getItem(k);
+      if(v != null) el.innerText = v;
+      el.addEventListener("input", function(){ localStorage.setItem(k, el.innerText); });
+    });
+    grid.querySelectorAll(".mood").forEach(function(m){
+      var k = m.dataset.key;
+      var sel = localStorage.getItem(k);
+      if(sel){
+        var b = m.querySelector('[data-m="' + sel + '"]');
+        if(b) b.classList.add("active");
+      }
+      m.querySelectorAll(".moodbtn").forEach(function(b){
+        b.addEventListener("click", function(){
+          m.querySelectorAll(".moodbtn").forEach(function(x){ x.classList.remove("active"); });
+          b.classList.add("active");
+          localStorage.setItem(k, b.dataset.m);
+        });
+      });
+    });
+    grid.querySelectorAll(".handle").forEach(function(h){
+      h.addEventListener("dragstart", function(e){
+        dragEl = h.closest(".note");
+        dragEl.classList.add("dragging");
+        e.dataTransfer.effectAllowed = "move";
+        try { e.dataTransfer.setData("text/plain", ""); } catch(err){}
+      });
+      h.addEventListener("dragend", function(){
+        if(dragEl) dragEl.classList.remove("dragging");
+        dragEl = null;
+        saveOrder();
+      });
+    });
+  }
+
+  function saveOrder(){
+    var ids = Array.prototype.map.call(grid.querySelectorAll(".note"), function(n){ return n.dataset.id; });
+    localStorage.setItem("sn.order." + mode, JSON.stringify(ids));
+  }
+
+  function closestNote(x, y){
+    var best = null, bd = Infinity;
+    grid.querySelectorAll(".note:not(.dragging)").forEach(function(el){
+      var b = el.getBoundingClientRect();
+      var cx = b.left + b.width/2, cy = b.top + b.height/2;
+      var d = (cx-x)*(cx-x) + (cy-y)*(cy-y);
+      if(d < bd){ bd = d; best = el; }
+    });
+    return best;
+  }
+
+  grid.addEventListener("dragover", function(e){
+    if(!dragEl) return;
+    e.preventDefault();
+    var el = closestNote(e.clientX, e.clientY);
+    if(!el){ grid.appendChild(dragEl); return; }
+    var b = el.getBoundingClientRect();
+    var before = (e.clientY < b.top + b.height/2) ||
+                 (Math.abs(e.clientY - (b.top + b.height/2)) < b.height/2 && e.clientX < b.left + b.width/2);
+    if(before) grid.insertBefore(dragEl, el);
+    else grid.insertBefore(dragEl, el.nextSibling);
+  });
+
+  /* name + date */
+  document.querySelectorAll(".val[contenteditable]").forEach(function(el){
+    var k = el.dataset.key, v = localStorage.getItem(k);
+    if(v != null) el.innerText = v;
+    el.addEventListener("input", function(){ localStorage.setItem(k, el.innerText); });
+  });
+
+  /* mode toggle */
+  var bS = document.getElementById("mStudent"), bT = document.getElementById("mTeacher");
+  function setMode(m){
+    mode = m;
+    localStorage.setItem("sn.mode", m);
+    bS.classList.toggle("on", m === "student"); bT.classList.toggle("on", m === "teacher");
+    bS.setAttribute("aria-selected", m === "student"); bT.setAttribute("aria-selected", m === "teacher");
+    render();
+  }
+  bS.addEventListener("click", function(){ setMode("student"); });
+  bT.addEventListener("click", function(){ setMode("teacher"); });
+
+  /* themes */
+  document.querySelectorAll(".sw").forEach(function(s){
+    s.addEventListener("click", function(){
+      var t = s.dataset.theme;
+      document.documentElement.setAttribute("data-theme", t);
+      document.querySelectorAll(".sw").forEach(function(x){ x.setAttribute("aria-pressed", x === s ? "true" : "false"); });
+      localStorage.setItem("sn.theme", t);
+    });
+  });
+  var th = localStorage.getItem("sn.theme");
+  if(th){
+    document.documentElement.setAttribute("data-theme", th);
+    document.querySelectorAll(".sw").forEach(function(x){ x.setAttribute("aria-pressed", x.dataset.theme === th ? "true" : "false"); });
+  }
+
+  /* clear */
+  document.getElementById("clearBtn").addEventListener("click", function(){
+    if(!confirm("Clear all notes on the " + mode + " side? This cannot be undone.")) return;
+    var prefix = (mode === "student") ? "s" : "t";
+    Object.keys(localStorage).forEach(function(k){
+      if((k.indexOf("sn.val.") === 0 || k.indexOf("sn.mood.") === 0)){
+        var id = k.split(".").slice(2).join(".");
+        if(id.charAt(0) === prefix) localStorage.removeItem(k);
+      }
+    });
+    render();
+  });
+
+  document.getElementById("printBtn").addEventListener("click", function(){ window.print(); });
+
+  setMode(mode);
+})();
+</script>
+</body>
+</html>
