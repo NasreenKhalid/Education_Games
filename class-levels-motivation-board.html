@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Class Levels — Effort, Growth & Kindness</title>
+<style>
+:root{
+  --bg:#f3f5fb; --ink:#1b2340; --muted:#6b7490; --line:#e6e9f2; --card:#ffffff;
+  --shadow:0 8px 24px rgba(27,35,64,.08); --shadow2:0 16px 40px rgba(27,35,64,.16);
+  --violet:#6c5ce7; --teal:#00b894; --amber:#f5a623; --coral:#e17055; --blue:#2f80ed; --pink:#e84393;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  font-family:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  color:var(--ink); min-height:100vh;
+  background:
+    radial-gradient(1100px 600px at 100% -10%, #eef0ff 0%, transparent 60%),
+    radial-gradient(900px 520px at -10% 5%, #e6fbf3 0%, transparent 55%),
+    var(--bg);
+}
+button{font:inherit;cursor:pointer}
+h1,h2,h3{margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 18px 70px}
+
+/* header */
+.top{position:sticky;top:0;z-index:40;backdrop-filter:blur(10px);
+  background:rgba(255,255,255,.82);border-bottom:1px solid var(--line)}
+.topin{max-width:1180px;margin:0 auto;padding:12px 18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.brand{display:flex;gap:12px;align-items:center;margin-right:auto}
+.logo{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;color:#fff;font-weight:800;
+  background:linear-gradient(135deg,var(--violet),var(--blue));box-shadow:0 6px 16px rgba(108,92,231,.35)}
+.brand h1{font-size:19px;letter-spacing:-.3px}
+.brand p{margin:1px 0 0;font-size:12px;color:var(--muted)}
+.top-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.seg{display:flex;background:#eef1f8;border-radius:11px;padding:3px}
+.seg button{border:0;background:transparent;color:var(--muted);font-weight:700;font-size:13px;padding:7px 14px;border-radius:8px}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 2px 8px rgba(27,35,64,.12)}
+.btn{border:1.5px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:13px;padding:9px 14px;border-radius:11px;transition:.16s}
+.btn:hover{border-color:#c9cfe4;transform:translateY(-1px)}
+.btn.primary{background:linear-gradient(135deg,var(--violet),var(--blue));border:0;color:#fff;box-shadow:0 6px 16px rgba(108,92,231,.3)}
+.btn.danger{color:#c0392b;border-color:#f0c9c3}
+.btn.ghost{background:transparent}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:18px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;box-shadow:var(--shadow)}
+.stat b{display:block;font-size:24px;letter-spacing:-.5px}
+.stat span{font-size:12px;color:var(--muted)}
+
+/* teams */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px;box-shadow:var(--shadow);margin-bottom:18px}
+.panel h2{font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.teamRow{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.team{border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:linear-gradient(180deg,#fff,#fbfcff)}
+.teamTop{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:9px;font-size:13px}
+.teamTop b{font-size:14px}
+.teamTop span{color:var(--muted);font-size:11.5px}
+.tbar{height:9px;border-radius:99px;background:#eef1f8;overflow:hidden}
+.tbar i{display:block;height:100%;border-radius:99px;background:var(--c);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+
+.gridHead{display:flex;align-items:center;justify-content:space-between;margin:6px 2px 12px}
+.gridHead h2{font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.search{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:8px 12px;font-size:13px;width:190px;outline:none}
+.search:focus{border-color:var(--violet)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:16px}
+
+/* student card */
+.card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px 16px 14px;
+  box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;text-align:center;transition:.2s}
+.card.boost{animation:pop .45s ease}
+@keyframes pop{0%{transform:scale(1)}35%{transform:scale(1.045)}100%{transform:scale(1)}}
+.card .edit{position:absolute;top:10px;right:10px;border:0;background:#f1f3fa;color:var(--muted);width:28px;height:28px;border-radius:9px;font-size:13px}
+.card .edit:hover{background:#e7eaf6;color:var(--ink)}
+.avatarWrap{position:relative;margin:6px 0 8px}
+.ring{width:84px;height:84px;border-radius:50%;padding:5px;
+  background:conic-gradient(var(--c) var(--p), #e9ecf5 0);display:grid;place-items:center}
+.av{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-size:30px;background:#fff}
+.lvl{position:absolute;bottom:-4px;right:-6px;background:var(--ink);color:#fff;font-size:11px;font-weight:800;
+  padding:3px 8px;border-radius:99px;border:3px solid #fff}
+.card h3{font-size:16px;letter-spacing:-.2px;margin:2px 0 4px}
+.chip{font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;background:color-mix(in srgb,var(--c) 14%, white);color:var(--c);border:1px solid color-mix(in srgb,var(--c) 35%, white)}
+.xpbar{width:100%;height:8px;border-radius:99px;background:#eef1f8;overflow:hidden;margin:12px 0 5px}
+.xpbar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--violet),var(--blue));transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.xpTxt{font-size:11px;color:var(--muted)}
+.badges{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;margin:10px 0 12px;min-height:26px}
+.badge{width:26px;height:26px;border-radius:9px;background:#f3f5fb;display:grid;place-items:center;font-size:14px;border:1px solid var(--line)}
+.badge.ghost{color:#c3c9dc;font-size:11px}
+.awards{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;width:100%;margin-top:auto}
+.award{border:1px solid var(--line);background:#fbfcff;border-radius:11px;padding:10px 2px 8px;display:flex;flex-direction:column;align-items:center;gap:1px;transition:.15s}
+.award span{font-size:9.5px;font-weight:800;color:var(--muted)}
+.award:hover{transform:translateY(-2px);border-color:var(--violet);box-shadow:0 6px 14px rgba(108,92,231,.18)}
+.award:active{transform:scale(.94)}
+
+/* student view */
+.pickerWrap{display:flex;gap:10px;align-items:center;margin:18px 0}
+.pickerWrap select{border:1.5px solid var(--line);border-radius:11px;padding:10px 14px;font-size:14px;background:#fff;outline:none}
+.bigCard{background:var(--card);border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow2);padding:30px;display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;max-width:760px;margin:0 auto}
+.bigRing{width:170px;height:170px;border-radius:50%;padding:8px;background:conic-gradient(var(--c) var(--p), #e9ecf5 0);display:grid;place-items:center}
+.bigAv{width:134px;height:134px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:64px}
+.bigCard h2{font-size:34px;letter-spacing:-.8px;margin:0 0 2px}
+.bigMeta{color:var(--muted);font-size:14px;margin-bottom:14px}
+.metricRow{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.metric{background:#f7f8fd;border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:12.5px}
+.metric b{display:block;font-size:18px}
+.bigBadges{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.bigBadges .badge{width:40px;height:40px;font-size:20px;border-radius:12px}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(20,26,48,.5);display:none;place-items:center;z-index:60;padding:18px;backdrop-filter:blur(3px)}
+.modal.open{display:grid}
+.modalCard{width:min(520px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:22px;padding:22px;box-shadow:var(--shadow2);animation:up .25s ease}
+@keyframes up{from{transform:translateY(14px);opacity:0}to{transform:none;opacity:1}}
+.modalCard h3{font-size:19px;margin-bottom:14px}
+.modalCard label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin:12px 0 6px;letter-spacing:.04em;text-transform:uppercase}
+.modalCard input[type=text],.modalCard select{width:100%;border:1.5px solid var(--line);border-radius:11px;padding:11px 13px;font-size:14px;outline:none;background:#fbfcff}
+.modalCard input:focus,.modalCard select:focus{border-color:var(--violet)}
+.emojiGrid,.colorGrid{display:flex;flex-wrap:wrap;gap:6px}
+.emobtn{width:38px;height:38px;border-radius:11px;border:2px solid transparent;background:#f4f6fc;font-size:19px}
+.emobtn.on{border-color:var(--violet);background:#f0eeff}
+.colbtn{width:30px;height:30px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1.5px var(--line)}
+.colbtn.on{box-shadow:0 0 0 2.5px var(--violet)}
+.modalActions{display:flex;gap:8px;margin-top:18px;align-items:center}
+.teamRowEdit{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.teamRowEdit input[type=text]{flex:1}
+.teamRowEdit .del{width:34px;height:34px;border-radius:9px;border:1px solid #f0c9c3;background:#fff;color:#c0392b}
+.hintSmall{font-size:12px;color:var(--muted);line-height:1.5;margin-top:6px}
+
+/* toast */
+.toasts{position:fixed;right:16px;bottom:16px;display:flex;flex-direction:column;gap:8px;z-index:80}
+.toast{background:var(--ink);color:#fff;padding:11px 15px;border-radius:12px;font-size:13px;font-weight:600;box-shadow:var(--shadow2);animation:tin .3s ease}
+@keyframes tin{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
+.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:40px;font-size:14px}
+
+@media(max-width:620px){
+  .bigCard{grid-template-columns:1fr;text-align:center;justify-items:center;padding:22px}
+  .bigRing{width:150px;height:150px}
+  .bigAv{width:116px;height:116px;font-size:54px}
+  .brand h1{font-size:16px}
+  .btn{padding:8px 11px}
+}
+.demoBar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:#fff8e8;border:1px solid #f3dfae;color:#7a5a12;border-radius:14px;padding:10px 14px;margin:16px 0 0;font-size:13px}
+.demoBar b{margin-right:auto;font-weight:600}
+.hidexp .card .xpbar,.hidexp .card .xpTxt,.hidexp .card .lvl{display:none}
+.hidexp .card .ring{background:#e9ecf5}
+.toast{display:flex;align-items:center;gap:12px}
+.toast button{border:0;background:rgba(255,255,255,.2);color:#fff;font-weight:700;font-size:12px;padding:4px 10px;border-radius:8px}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="topin">
+    <div class="brand">
+      <div class="logo">▲</div>
+      <div><h1 id="className">Class 6B</h1><p>Class Levels · effort, growth &amp; kindness</p></div>
+    </div>
+    <div class="top-actions">
+      <div class="seg">
+        <button id="modeTeacher" class="on">Teacher</button>
+        <button id="modeStudent">Student</button>
+      </div>
+      <button class="btn" id="xpBtn" title="Hide XP and levels while projecting">👁 XP</button>
+      <button class="btn" id="addStudentBtn">+ Student</button>
+      <button class="btn" id="teamsBtn">Teams</button>
+      <button class="btn" id="menuBtn">⋯</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <section id="teacherView">
+    <div id="demoBar"></div>
+    <div class="stats" id="classStats"></div>
+    <div class="panel" id="teamsPanel"></div>
+    <div class="gridHead">
+      <h2>Students</h2>
+      <input class="search" id="search" placeholder="Search a student…"/>
+    </div>
+    <div class="grid" id="studentGrid"></div>
+  </section>
+
+  <section id="studentView" hidden>
+    <div class="pickerWrap">
+      <label style="font-size:13px;color:var(--muted);font-weight:700">Show card for</label>
+      <select id="studentPicker"></select>
+    </div>
+    <div id="bigCard"></div>
+  </section>
+</div>
+
+<div class="modal" id="modal"><div class="modalCard" id="modalCard"></div></div>
+<div class="toasts" id="toasts"></div>
+
+<script>
+(function(){
+  "use strict";
+  var KEY = "classLevels.v1";
+
+  var CATS = [
+    {key:"homework", icon:"📚", label:"Homework", pts:10},
+    {key:"participation", icon:"🙋", label:"Participation", pts:5},
+    {key:"kindness", icon:"💛", label:"Kindness", pts:10},
+    {key:"effort", icon:"🔥", label:"Effort", pts:5},
+    {key:"improvement", icon:"📈", label:"Improvement", pts:15}
+  ];
+  var CATMAP = {}; CATS.forEach(function(c){ CATMAP[c.key] = c; });
+  var EMOJIS = ["🦊","🐺","🦉","🐯","🦁","🐼","🦄","🐙","🦋","🐢","🦅","🐬","🚀","⚡","🌟","🎯","🧠","🎨","🎧","🔥","🐝","🦖"];
+  var COLORS = ["#6c5ce7","#00b894","#e17055","#f5a623","#2f80ed","#e84393","#00cec9","#8e44ad","#d35400","#16a085"];
+
+  var BADGES = [
+    {id:"first", icon:"🌱", label:"First Step", test:function(s,t){return t>0;}},
+    {id:"hw", icon:"📚", label:"Homework Hero", test:function(s){return s.points.homework>=50;}},
+    {id:"kind", icon:"💛", label:"Kindness Star", test:function(s){return s.points.kindness>=50;}},
+    {id:"part", icon:"🙋", label:"Team Player", test:function(s){return s.points.participation>=40;}},
+    {id:"eff", icon:"🔥", label:"Try-Hard", test:function(s){return s.points.effort>=40;}},
+    {id:"imp", icon:"📈", label:"Climber", test:function(s){return s.points.improvement>=30;}},
+    {id:"l5", icon:"⭐", label:"Rising Star", test:function(s){return levelFromXp(s.xp)>=5;}},
+    {id:"l10", icon:"👑", label:"Champion", test:function(s){return levelFromXp(s.xp)>=10;}}
+  ];
+
+  function uid(p){ return (p||"id") + Math.random().toString(36).slice(2,8); }
+  function esc(x){ return String(x==null?"":x).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
+  function threshold(l){ return 25 * l * (l - 1); }
+  function levelFromXp(xp){ var l = 1; while (threshold(l+1) <= xp) l++; return l; }
+  function progress(xp){
+    var l = levelFromXp(xp), cur = threshold(l), next = threshold(l+1);
+    return {level:l, cur:cur, next:next, pct: next>cur ? Math.min(1,(xp-cur)/(next-cur)) : 0, toNext: Math.max(0,next-xp)};
+  }
+  function totalPoints(s){ return CATS.reduce(function(a,c){ return a + (s.points[c.key]||0); },0); }
+  function badgesFor(s){ var t = totalPoints(s); return BADGES.filter(function(b){ try{return b.test(s,t);}catch(e){return false;} }); }
+
+  /* ---------- state ---------- */
+  function demo(){
+    var teams = [
+      {id:"t1", name:"Team Nova", color:"#6c5ce7"},
+      {id:"t2", name:"Team Orbit", color:"#00b894"},
+      {id:"t3", name:"Team Comet", color:"#e17055"}
+    ];
+    function st(name, emoji, color, pts, teamId){
+      var p = {homework:pts[0], participation:pts[1], kindness:pts[2], effort:pts[3], improvement:pts[4]};
+      var xp = pts[0]+pts[1]+pts[2]+pts[3]+pts[4];
+      return {id:uid("s"), name:name, emoji:emoji, color:color, xp:xp, points:p, teamId:teamId};
+    }
+    var students = [
+      st("Laura","🦊","#6c5ce7",[80,70,80,50,150],"t1"),
+      st("Alex","🐺","#00b894",[70,50,60,40,90],"t2"),
+      st("Tom","🦉","#e17055",[30,25,20,20,30],"t3"),
+      st("Maya","🦋","#e84393",[140,90,120,70,240],"t1"),
+      st("Noah","🐙","#2f80ed",[10,15,10,10,15],"t2"),
+      st("Zara","🦄","#8e44ad",[200,140,180,100,390],"t3"),
+      st("Ben","🐼","#00cec9",[0,0,0,0,0],"t1"),
+      st("Ivy","🦅","#f5a623",[40,35,40,25,45],"t2")
+    ];
+    var log = [];
+    function seed(name, cat, hoursAgo){
+      var s = students.find(function(x){return x.name===name;});
+      if(s) log.push({sid:s.id, cat:cat, pts:CATMAP[cat].pts, ts: Date.now() - hoursAgo*3600*1000});
+    }
+    seed("Zara","improvement",120); seed("Maya","kindness",96); seed("Laura","participation",70);
+    seed("Zara","homework",48); seed("Maya","homework",40); seed("Alex","effort",30);
+    seed("Ivy","participation",20); seed("Maya","effort",8); seed("Zara","kindness",4);
+    return { name:"Class 6B", teams: teams, students: students, log: log, demo:true };
+  }
+
+  function blank(){ return {name:"My Class", teams:[], students:[], log:[], demo:false}; }
+  function normalize(d){
+    var hex = /^#[0-9a-fA-F]{3,8}$/;
+    function col(c,f){ return hex.test(c) ? c : f; }
+    var teams = (Array.isArray(d.teams)?d.teams:[]).map(function(t,i){ t = t||{};
+      return {id:String(t.id||uid("t")), name:String(t.name||"Team").slice(0,20), color:col(t.color, COLORS[i%COLORS.length])}; });
+    var students = (Array.isArray(d.students)?d.students:[]).map(function(s){
+      s = s||{}; var pts = s.points||{}, p = {};
+      CATS.forEach(function(c){ p[c.key] = Math.max(0, Number(pts[c.key])||0); });
+      var xp = CATS.reduce(function(a,c){ return a+p[c.key]; },0);
+      return {id:String(s.id||uid("s")), name:String(s.name||"Student").slice(0,24),
+        emoji:String(s.emoji||"🦊").replace(/[<>&"']/g,"").slice(0,8), color:col(s.color, COLORS[0]),
+        xp:xp, points:p, teamId:String(s.teamId||"")};
+    });
+    var log = (Array.isArray(d.log)?d.log:[]).filter(function(l){ return l && CATMAP[l.cat] && Number(l.ts); })
+      .map(function(l){ return {sid:String(l.sid), cat:l.cat, pts:Number(l.pts)||CATMAP[l.cat].pts, ts:Number(l.ts)}; });
+    return {name:String(d.name||"My Class").slice(0,30), teams:teams, students:students, log:log, demo:!!d.demo};
+  }
+
+  function load(){
+    try{ var raw = localStorage.getItem(KEY); if(raw){ var d = JSON.parse(raw); if(d && Array.isArray(d.students)) return normalize(d); } }catch(e){}
+    return demo();
+  }
+  var state = load();
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+
+  var mode = "teacher";
+  var query = "";
+  var selectedId = "";
+  var hideXp = false;
+  try{ hideXp = localStorage.getItem("classLevels.hideXp")==="1"; }catch(e){}
+
+  /* ---------- elements ---------- */
+  var $ = function(id){ return document.getElementById(id); };
+  var grid = $("studentGrid"), statsEl = $("classStats"), teamsEl = $("teamsPanel");
+  var modal = $("modal"), modalCard = $("modalCard"), toasts = $("toasts");
+
+  /* ---------- render ---------- */
+  function renderStats(){
+    var totalXp = state.students.reduce(function(a,s){return a+s.xp;},0);
+    var levels = state.students.map(function(s){return levelFromXp(s.xp);});
+    var avg = levels.length ? (levels.reduce(function(a,b){return a+b;},0)/levels.length) : 1;
+    var d0 = new Date(); d0.setHours(0,0,0,0); var dayAgo = d0.getTime();
+    var today = state.log.filter(function(l){return l.ts>=dayAgo;}).length;
+    var weekAgo = Date.now() - 7*24*3600*1000;
+    var weekly = {};
+    state.log.forEach(function(l){ if(l.ts>=weekAgo){ weekly[l.sid]=(weekly[l.sid]||0)+l.pts; } });
+    var bestId=null, bestVal=0;
+    Object.keys(weekly).forEach(function(k){ if(weekly[k]>bestVal){bestVal=weekly[k];bestId=k;} });
+    var best = bestId ? studentById(bestId) : null;
+
+    statsEl.innerHTML =
+      stat(totalXp, "Class XP") +
+      stat(avg.toFixed(1), "Average level") +
+      stat(today, "Awards today") +
+      stat(best ? esc(best.name) : "—", "Top earner this week");
+  }
+  function stat(v,l){ return '<div class="stat"><b>'+v+'</b><span>'+l+'</span></div>'; }
+
+  function renderTeams(){
+    var xs = state.teams.map(function(t){
+      var members = state.students.filter(function(s){return s.teamId===t.id;});
+      var tot = members.reduce(function(a,s){return a+s.xp;},0);
+      return {t:t, n:members.length, xp:tot, avg:members.length ? Math.round(tot/members.length) : 0};
+    });
+    var max = Math.max.apply(null, [1].concat(xs.map(function(x){return x.avg;})));
+    var html = '<h2>Teams</h2><div class="teamRow">';
+    html += xs.map(function(x){
+      return '<div class="team"><div class="teamTop"><b>'+esc(x.t.name)+'</b><span>'+x.n+' members · avg '+x.avg+' XP</span></div>'+
+        '<div class="tbar" style="--c:'+x.t.color+'"><i style="width:'+Math.round(x.avg/max*100)+'%"></i></div></div>';
+    }).join("") || '<div class="empty">No teams yet.</div>';
+    html += '</div>';
+    teamsEl.innerHTML = html;
+  }
+
+  function cardHTML(s){
+    var p = progress(s.xp);
+    var team = state.teams.find(function(t){return t.id===s.teamId;});
+    var bs = badgesFor(s);
+    var badges = bs.map(function(b){return '<span class="badge" title="'+b.label+'">'+b.icon+'</span>';}).join("");
+    if(!badges) badges = '<span class="badge ghost">no badges yet</span>';
+    var awards = CATS.map(function(c){
+      return '<button class="award" data-award="'+s.id+'" data-cat="'+c.key+'" title="+'+c.pts+' '+c.label+'" aria-label="+'+c.pts+' '+c.label+' for '+esc(s.name)+'">'+
+        '<span style="font-size:15px">'+c.icon+'</span><span>+'+c.pts+'</span></button>';
+    }).join("");
+    return '<article class="card" data-id="'+s.id+'">'+
+      '<button class="edit" data-edit="'+s.id+'" title="Edit">✎</button>'+
+      '<div class="avatarWrap"><div class="ring" style="--c:'+s.color+';--p:'+Math.round(p.pct*100)+'%">'+
+        '<div class="av">'+s.emoji+'</div></div><div class="lvl">Lv '+p.level+'</div></div>'+
+      '<h3 dir="auto">'+esc(s.name)+'</h3>'+
+      (team ? '<span class="chip" style="--c:'+team.color+'">'+esc(team.name)+'</span>' : '')+
+      '<div class="xpbar"><i style="width:'+Math.round(p.pct*100)+'%"></i></div>'+
+      '<div class="xpTxt">'+s.xp+' XP · '+p.toNext+' to Lv '+(p.level+1)+'</div>'+
+      '<div class="badges">'+badges+'</div>'+
+      '<div class="awards">'+awards+'</div>'+
+      '</article>';
+  }
+
+  function renderGrid(){
+    var list = state.students.slice();
+    if(query){ var q = query.toLowerCase(); list = list.filter(function(s){return s.name.toLowerCase().indexOf(q)>=0;}); }
+    if(!list.length){ grid.innerHTML = '<div class="empty">No students found. Tap “+ Student” to add one.</div>'; return; }
+    grid.innerHTML = list.map(cardHTML).join("");
+  }
+
+  function renderPicker(){
+    var sel = $("studentPicker");
+    if(!sel) return;
+    sel.innerHTML = state.students.map(function(s){return '<option value="'+s.id+'">'+esc(s.name)+'</option>';}).join("");
+    if(!state.students.length){ $("bigCard").innerHTML = '<div class="empty">No students yet. Switch to Teacher view and tap “+ Student”.</div>'; return; }
+    if(!studentById(selectedId)) selectedId = state.students[0].id;
+    sel.value = selectedId;
+    renderBig(selectedId);
+  }
+
+  function renderBig(id){
+    var s = studentById(id); if(!s) return;
+    var p = progress(s.xp);
+    var team = state.teams.find(function(t){return t.id===s.teamId;});
+    var bs = badgesFor(s);
+    var bad = bs.map(function(b){return '<span class="badge" title="'+b.label+'">'+b.icon+'</span>';}).join("") || '<span class="badge ghost">no badges yet</span>';
+    var metrics = CATS.map(function(c){return '<div class="metric"><b>'+(s.points[c.key]||0)+'</b>'+c.icon+' '+c.label+'</div>';}).join("");
+    var teamBlock = team ? '<div class="metric" style="border-color:'+team.color+'55"><b style="color:'+team.color+'">'+esc(team.name)+'</b>team</div>' : "";
+    $("bigCard").innerHTML =
+      '<div class="bigCard">'+
+        '<div class="bigRing" style="--c:'+s.color+';--p:'+Math.round(p.pct*100)+'%"><div class="bigAv">'+s.emoji+'</div></div>'+
+        '<div>'+
+          '<h2 dir="auto">'+esc(s.name)+'</h2>'+
+          '<div class="bigMeta">Level '+p.level+' hero · '+s.xp+' XP · '+p.toNext+' XP to Level '+(p.level+1)+'</div>'+
+          '<div class="xpbar" style="margin:0 0 6px"><i style="width:'+Math.round(p.pct*100)+'%"></i></div>'+
+          '<div class="metricRow">'+teamBlock+metrics+'</div>'+
+          '<div style="font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase">Badges</div>'+
+          '<div class="bigBadges">'+bad+'</div>'+
+        '</div>'+
+      '</div>';
+  }
+
+  function renderDemoBar(){
+    var el = $("demoBar");
+    if(!state.demo){ el.innerHTML = ""; return; }
+    el.innerHTML = '<div class="demoBar"><b>This is a demo class so you can try things out.</b><button class="btn primary" id="startOwn">Start my own class</button></div>';
+    $("startOwn").onclick = function(){
+      if(!confirm("Clear the demo and start with an empty class?")) return;
+      state = blank(); save(); renderAll(); toast("Empty class ready — tap + Student");
+    };
+  }
+  function applyXp(){ document.body.classList.toggle("hidexp", hideXp); $("xpBtn").classList.toggle("primary", hideXp); }
+
+  function studentById(id){ return state.students.find(function(s){return s.id===id;}); }
+
+  function renderAll(){
+    $("className").textContent = state.name;
+    renderDemoBar(); renderStats(); renderTeams(); renderGrid();
+    if(mode==="student") renderPicker();
+  }
+
+  /* ---------- actions ---------- */
+  function award(sid, cat){
+    var s = studentById(sid); if(!s) return;
+    var c = CATMAP[cat]; if(!c) return;
+    var beforeLevel = levelFromXp(s.xp);
+    s.points[cat] = (s.points[cat]||0) + c.pts;
+    s.xp += c.pts;
+    state.log.push({sid:sid, cat:cat, pts:c.pts, ts:Date.now()});
+    save();
+    var afterLevel = levelFromXp(s.xp);
+    renderAll();
+    var card = null;
+    if(mode==="teacher"){
+      card = grid.querySelector('[data-id="'+sid+'"]');
+      if(card){ card.classList.add("boost"); setTimeout(function(){ card.classList.remove("boost"); }, 480); }
+    } else { renderBig(sid); }
+    if(afterLevel > beforeLevel){
+      toast("🎉 " + s.name + " reached Level " + afterLevel + "!", true);
+    } else {
+      toast("+" + c.pts + " " + c.label + " → " + s.name, true);
+    }
+  }
+
+  function undo(){
+    var last = state.log.pop();
+    if(!last){ toast("Nothing to undo"); return; }
+    var s = studentById(last.sid);
+    if(s){ s.xp = Math.max(0, s.xp - last.pts); s.points[last.cat] = Math.max(0,(s.points[last.cat]||0) - last.pts); }
+    save(); renderAll();
+    toast("Undid +" + last.pts + " " + CATMAP[last.cat].label);
+  }
+
+  function toast(msg, canUndo){
+    var t = document.createElement("div");
+    t.className = "toast";
+    var m = document.createElement("span"); m.textContent = msg; t.appendChild(m);
+    if(canUndo){
+      var u = document.createElement("button"); u.textContent = "Undo";
+      u.onclick = function(){ u.disabled = true; t.remove(); undo(); };
+      t.appendChild(u);
+    }
+    toasts.appendChild(t);
+    var life = canUndo ? 4000 : 1900;
+    setTimeout(function(){ t.style.opacity="0"; t.style.transform="translateY(8px)"; t.style.transition=".3s"; }, life);
+    setTimeout(function(){ t.remove(); }, life + 400);
+  }
+
+  /* ---------- modal helpers ---------- */
+  function openModal(html){ modalCard.innerHTML = html; modal.classList.add("open"); }
+  function closeModal(){ modal.classList.remove("open"); modalCard.innerHTML = ""; }
+  modal.addEventListener("click", function(e){ if(e.target === modal) closeModal(); });
+
+  /* ---------- student modal ---------- */
+  function studentModal(id){
+    var editing = !!id;
+    var s = editing ? studentById(id) : {name:"", emoji:EMOJIS[0], color:COLORS[0], teamId: state.teams[0] ? state.teams[0].id : ""};
+    var emojis = EMOJIS.map(function(e){return '<button class="emobtn '+(e===s.emoji?"on":"")+'" data-emoji="'+e+'">'+e+'</button>';}).join("");
+    var colors = COLORS.map(function(c){return '<button class="colbtn '+(c===s.color?"on":"")+'" data-color="'+c+'" style="background:'+c+'"></button>';}).join("");
+    var teams = state.teams.map(function(t){return '<option value="'+t.id+'" '+(t.id===s.teamId?"selected":"")+'>'+esc(t.name)+'</option>';}).join("");
+    openModal(
+      '<h3>'+(editing?"Edit student":"New student")+'</h3>'+
+      '<label>Name</label><input type="text" dir="auto" id="fName" maxlength="24" placeholder="Student name" value="'+esc(s.name)+'">'+
+      '<label>Avatar</label><div class="emojiGrid">'+emojis+'</div>'+
+      '<label>Colour</label><div class="colorGrid">'+colors+'</div>'+
+      '<label>Team</label><select id="fTeam"><option value="">— none —</option>'+teams+'</select>'+
+      '<div class="modalActions">'+
+        (editing?'<button class="btn danger" id="delBtn">Delete</button>':'')+
+        '<span style="flex:1"></span>'+
+        '<button class="btn" id="cancelBtn">Cancel</button>'+
+        '<button class="btn primary" id="saveBtn">Save</button>'+
+      '</div>'
+    );
+    var chosenEmoji = s.emoji, chosenColor = s.color;
+    Array.prototype.forEach.call(modalCard.querySelectorAll("[data-emoji]"), function(b){
+      b.onclick = function(){ chosenEmoji = b.dataset.emoji; modalCard.querySelectorAll("[data-emoji]").forEach(function(x){x.classList.toggle("on", x===b);}); };
+    });
+    Array.prototype.forEach.call(modalCard.querySelectorAll("[data-color]"), function(b){
+      b.onclick = function(){ chosenColor = b.dataset.color; modalCard.querySelectorAll("[data-color]").forEach(function(x){x.classList.toggle("on", x===b);}); };
+    });
+    $("cancelBtn").onclick = closeModal;
+    $("saveBtn").onclick = function(){
+      var name = $("fName").value.trim();
+      if(!name){ $("fName").focus(); return; }
+      var teamId = $("fTeam").value;
+      if(editing){
+        s.name = name; s.emoji = chosenEmoji; s.color = chosenColor; s.teamId = teamId;
+      } else {
+        state.students.push({id:uid("s"), name:name, emoji:chosenEmoji, color:chosenColor, xp:0,
+          points:{homework:0,participation:0,kindness:0,effort:0,improvement:0}, teamId:teamId});
+      }
+      save(); renderAll(); closeModal(); toast(editing?"Student updated":"Student added");
+    };
+    if(editing){
+      $("delBtn").onclick = function(){
+        if(!confirm("Remove " + s.name + "? Their points will be lost.")) return;
+        state.students = state.students.filter(function(x){return x.id!==s.id;});
+        state.log = state.log.filter(function(l){return l.sid!==s.id;});
+        save(); renderAll(); closeModal(); toast("Student removed");
+      };
+    }
+  }
+
+  /* ---------- teams modal ---------- */
+  function teamsModal(){
+    var rows = state.teams.map(function(t){
+      return '<div class="teamRowEdit" data-team="'+t.id+'">'+
+        '<input type="color" value="'+t.color+'" data-tcolor="'+t.id+'" style="width:38px;height:38px;border:none;background:none">'+
+        '<input type="text" dir="auto" value="'+esc(t.name)+'" data-tname="'+t.id+'" maxlength="20">'+
+        '<button class="del" data-tdel="'+t.id+'">✕</button></div>';
+    }).join("");
+    openModal(
+      '<h3>Teams</h3><div id="teamList">'+(rows || '<p class="hintSmall">No teams yet — add one below.</p>')+'</div>'+
+      '<div class="modalActions"><button class="btn" id="addTeamBtn">+ Add team</button><span style="flex:1"></span><button class="btn primary" id="doneBtn">Done</button></div>'+
+      '<p class="hintSmall">Teams are ranked by average XP per member, so team size doesn’t matter.</p>'
+    );
+    Array.prototype.forEach.call(modalCard.querySelectorAll("[data-tname]"), function(inp){
+      inp.onchange = function(){ var t = state.teams.find(function(x){return x.id===inp.dataset.tname;}); if(t){ t.name = inp.value.trim() || "Team"; save(); renderAll(); } };
+    });
+    Array.prototype.forEach.call(modalCard.querySelectorAll("[data-tcolor]"), function(inp){
+      inp.oninput = function(){ var t = state.teams.find(function(x){return x.id===inp.dataset.tcolor;}); if(t){ t.color = inp.value; save(); renderAll(); } };
+    });
+    Array.prototype.forEach.call(modalCard.querySelectorAll("[data-tdel]"), function(btn){
+      btn.onclick = function(){
+        var id = btn.dataset.tdel;
+        if(!confirm("Delete this team?")) return;
+        state.teams = state.teams.filter(function(x){return x.id!==id;});
+        state.students.forEach(function(s){ if(s.teamId===id) s.teamId=""; });
+        save(); renderAll(); teamsModal();
+      };
+    });
+    $("addTeamBtn").onclick = function(){
+      state.teams.push({id:uid("t"), name:"Team " + (state.teams.length+1), color:COLORS[state.teams.length % COLORS.length]});
+      save(); renderAll(); teamsModal();
+    };
+    $("doneBtn").onclick = closeModal;
+  }
+
+  /* ---------- menu modal ---------- */
+  function menuModal(){
+    openModal(
+      '<h3>Class settings</h3>'+
+      '<label>Class name</label><input type="text" dir="auto" id="fClass" maxlength="30" value="'+esc(state.name)+'">'+
+      '<div class="modalActions" style="flex-wrap:wrap">'+
+        '<button class="btn" id="undoBtn">↶ Undo last award</button>'+
+        '<button class="btn" id="exportBtn">⬇ Export</button>'+
+        '<button class="btn" id="importBtn">⬆ Import</button>'+
+      '</div>'+
+      '<div class="modalActions" style="flex-wrap:wrap"><span style="flex:1"></span><button class="btn" id="demoBtn">Load demo class</button><button class="btn danger" id="resetBtn">Start empty class</button><button class="btn primary" id="closeBtn">Done</button></div>'+
+      '<p class="hintSmall">Everything is saved in this browser. Export a backup to move the class to another device. Backups contain student names, so keep them somewhere private.</p>'+
+      '<input type="file" id="fileInput" accept="application/json" style="display:none">'
+    );
+    $("fClass").onchange = function(){ state.name = $("fClass").value.trim() || "My Class"; save(); renderAll(); };
+    $("undoBtn").onclick = function(){ undo(); closeModal(); };
+    $("exportBtn").onclick = function(){
+      var blob = new Blob([JSON.stringify(state, null, 2)], {type:"application/json"});
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = (state.name || "class").replace(/\s+/g,"-").toLowerCase() + "-class-levels.json";
+      a.click(); URL.revokeObjectURL(a.href);
+    };
+    $("importBtn").onclick = function(){ $("fileInput").click(); };
+    $("fileInput").onchange = function(e){
+      var f = e.target.files[0]; if(!f) return;
+      var r = new FileReader();
+      r.onload = function(){ try{ var d = JSON.parse(r.result); if(d && Array.isArray(d.students)){ state = normalize(d); state.demo = false; save(); renderAll(); closeModal(); toast("Class imported"); } else { toast("That file isn't a Class Levels backup"); } }catch(err){ toast("Could not read that file"); } };
+      r.readAsText(f);
+    };
+    $("resetBtn").onclick = function(){
+      if(!confirm("Remove all students, teams and points and start an empty class? This cannot be undone.")) return;
+      state = blank(); save(); renderAll(); closeModal(); toast("Started an empty class");
+    };
+    $("demoBtn").onclick = function(){
+      if(!confirm("Replace your class with the demo class? This cannot be undone.")) return;
+      state = demo(); save(); renderAll(); closeModal(); toast("Demo class loaded");
+    };
+    $("closeBtn").onclick = closeModal;
+  }
+
+  /* ---------- wiring ---------- */
+  grid.addEventListener("click", function(e){
+    var aw = e.target.closest("[data-award]");
+    if(aw){ award(aw.dataset.award, aw.dataset.cat); return; }
+    var ed = e.target.closest("[data-edit]");
+    if(ed){ studentModal(ed.dataset.edit); return; }
+  });
+  $("addStudentBtn").onclick = function(){ studentModal(null); };
+  $("xpBtn").onclick = function(){ hideXp = !hideXp; try{ localStorage.setItem("classLevels.hideXp", hideXp?"1":"0"); }catch(e){} applyXp(); };
+  document.addEventListener("keydown", function(e){ if(e.key==="Escape" && modal.classList.contains("open")) closeModal(); });
+  $("teamsBtn").onclick = teamsModal;
+  $("menuBtn").onclick = menuModal;
+  $("search").oninput = function(e){ query = e.target.value.trim(); renderGrid(); };
+
+  $("modeTeacher").onclick = function(){
+    mode = "teacher";
+    $("modeTeacher").classList.add("on"); $("modeStudent").classList.remove("on");
+    $("teacherView").hidden = false; $("studentView").hidden = true;
+    renderAll();
+  };
+  $("modeStudent").onclick = function(){
+    mode = "student";
+    $("modeStudent").classList.add("on"); $("modeTeacher").classList.remove("on");
+    $("teacherView").hidden = true; $("studentView").hidden = false;
+    renderPicker();
+  };
+  $("studentPicker").addEventListener("change", function(e){ selectedId = e.target.value; renderBig(selectedId); });
+
+  /* keep multiple tabs in sync */
+  window.addEventListener("storage", function(e){ if(e.key===KEY){ state = load(); renderAll(); } });
+
+  applyXp();
+  renderAll();
+})();
+</script>
+</body>
+</html>
